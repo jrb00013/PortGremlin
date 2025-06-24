@@ -25,12 +25,33 @@
 #ifndef _USB_KEYB_STRUCTS_H_
 #define _USB_KEYB_STRUCTS_H_
 
+typedef enum {
+    DEVICE_KEYBOARD = 0,
+    DEVICE_AUDIO,
+    DEVICE_PRINTER,
+    DEVICE_MIDI,
+    DEVICE_GAMEPAD,
+    NUM_DEVICE_TYPES
+} DeviceType;
+
+
+extern DeviceType g_eCurrentDevice;
+extern void *g_pActiveDevice;
+
+
 extern uint32_t KeyboardHandler(void *pvCBData,
                                      uint32_t ui32Event,
                                      uint32_t ui32MsgData,
                                      void *pvMsgData);
 
 extern tUSBDHIDKeyboardDevice g_sKeyboardDevice;
+
+extern tUSBDHIDKeyboardDevice g_sKeyboardTemplate;
+extern tUSBAudioDevice g_sAudioTemplate;
+extern tUSBPrinterDevice g_sPrinterTemplate;
+extern tUSBMIDIDevice g_sMIDITemplate;
+extern tUSBDHIDGamepadDevice g_sGamepadTemplate;
+
 
 extern const uint8_t * const g_ppui8StringDescriptors[];
 

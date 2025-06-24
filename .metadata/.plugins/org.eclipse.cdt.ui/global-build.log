@@ -1870,3 +1870,853 @@ Finished building target: "usb_dev_keyboard.out"
 gmake[1]: 'usb_dev_keyboard.out' is up to date.
 
 **** Build Finished ****
+
+**** Clean-only build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 clean -O 
+ 
+DEL /F  "usb_dev_keyboard.out" 
+DEL /F "startup_ccs.obj" "usb_dev_keyboard.obj" "usb_keyb_structs.obj" "drivers\buttons.obj" "utils\uartstdio.obj" 
+DEL /F "startup_ccs.d" "usb_dev_keyboard.d" "usb_keyb_structs.d" "drivers\buttons.d" "utils\uartstdio.d" 
+Finished clean
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"../usb_dev_keyboard.c", line 79: error #20: identifier "DeviceType" is undefined
+"../usb_dev_keyboard.c", line 79: error #20: identifier "DEVICE_KEYBOARD" is undefined
+"../usb_dev_keyboard.c", line 232: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 233: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 234: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 235: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 236: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 712: error #20: identifier "NUM_DEVICE_TYPES" is undefined
+"../usb_dev_keyboard.c", line 720: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 724: error #20: identifier "DEVICE_AUDIO" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "g_sAudioTemplate" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 728: warning #225-D: function "RandomizeVIDPID_Generic" declared implicitly
+"../usb_dev_keyboard.c", line 729: warning #225-D: function "USBAudioInit" declared implicitly
+"../usb_dev_keyboard.c", line 732: error #20: identifier "DEVICE_PRINTER" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "g_sPrinterTemplate" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 737: warning #225-D: function "USBPrinterInit" declared implicitly
+"../usb_dev_keyboard.c", line 740: error #20: identifier "DEVICE_MIDI" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "g_sMIDITemplate" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 745: warning #225-D: function "USBMIDIInit" declared implicitly
+"../usb_dev_keyboard.c", line 748: error #20: identifier "DEVICE_GAMEPAD" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "g_sGamepadTemplate" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 753: warning #225-D: function "USBDHIDGamepadInit" declared implicitly
+24 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"../usb_keyb_structs.c", line 37: warning #48-D: incompatible redefinition of macro "USB_PID_AUDIO" (declared at line 46 of "C:/ti/TivaWare_C_Series-2.2.0.295/usblib/usb-ids.h")
+"../usb_keyb_structs.c", line 177: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 191: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 238: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 237: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 242: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 243: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 249: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 250: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 251: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 275: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 277: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 301: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 303: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 327: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 329: error #28: expression must have a constant value
+15 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../startup_ccs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="startup_ccs.d_raw"  "../startup_ccs.c"
+Finished building: "../startup_ccs.c"
+ 
+Building file: "C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl/drivers/buttons.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="drivers/buttons.d_raw" --obj_directory="drivers"  "C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl/drivers/buttons.c"
+Finished building: "C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl/drivers/buttons.c"
+ 
+Building file: "C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="utils/uartstdio.d_raw" --obj_directory="utils"  "C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c"
+Finished building: "C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c"
+ 
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"../usb_keyb_structs.c", line 37: warning #48-D: incompatible redefinition of macro "USB_PID_AUDIO" (declared at line 46 of "C:/ti/TivaWare_C_Series-2.2.0.295/usblib/usb-ids.h")
+"../usb_keyb_structs.c", line 177: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 191: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 238: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 237: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 242: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 243: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 249: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 250: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 251: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 275: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 277: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 301: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 303: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 327: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 329: error #28: expression must have a constant value
+15 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"../usb_dev_keyboard.c", line 79: error #20: identifier "DeviceType" is undefined
+"../usb_dev_keyboard.c", line 79: error #20: identifier "DEVICE_KEYBOARD" is undefined
+"../usb_dev_keyboard.c", line 232: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 233: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 234: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 235: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 236: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 712: error #20: identifier "NUM_DEVICE_TYPES" is undefined
+"../usb_dev_keyboard.c", line 720: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 724: error #20: identifier "DEVICE_AUDIO" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "g_sAudioTemplate" is undefined
+"../usb_dev_keyboard.c", line 726: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 728: warning #225-D: function "RandomizeVIDPID_Generic" declared implicitly
+"../usb_dev_keyboard.c", line 729: warning #225-D: function "USBAudioInit" declared implicitly
+"../usb_dev_keyboard.c", line 732: error #20: identifier "DEVICE_PRINTER" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "g_sPrinterTemplate" is undefined
+"../usb_dev_keyboard.c", line 734: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 737: warning #225-D: function "USBPrinterInit" declared implicitly
+"../usb_dev_keyboard.c", line 740: error #20: identifier "DEVICE_MIDI" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "g_sMIDITemplate" is undefined
+"../usb_dev_keyboard.c", line 742: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 745: warning #225-D: function "USBMIDIInit" declared implicitly
+"../usb_dev_keyboard.c", line 748: error #20: identifier "DEVICE_GAMEPAD" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "g_sGamepadTemplate" is undefined
+"../usb_dev_keyboard.c", line 750: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 753: warning #225-D: function "USBDHIDGamepadInit" declared implicitly
+24 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 42: error #102: "DEVICE_KEYBOARD" has already been declared in the current scope
+"../usb_keyb_structs.c", line 43: error #102: "DEVICE_AUDIO" has already been declared in the current scope
+"../usb_keyb_structs.c", line 44: error #102: "DEVICE_PRINTER" has already been declared in the current scope
+"../usb_keyb_structs.c", line 45: error #102: "DEVICE_MIDI" has already been declared in the current scope
+"../usb_keyb_structs.c", line 46: error #102: "DEVICE_GAMEPAD" has already been declared in the current scope
+"../usb_keyb_structs.c", line 47: error #102: "NUM_DEVICE_TYPES" has already been declared in the current scope
+"../usb_keyb_structs.c", line 48: error #258: invalid redeclaration of type name "DeviceType" (declared at line 35 of "..\usb_keyb_structs.h")
+"../usb_keyb_structs.c", line 177: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 191: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 238: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 237: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 242: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 243: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 249: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 250: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 251: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 275: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 277: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 301: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 303: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 327: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 329: error #28: expression must have a constant value
+26 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 232: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 233: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 234: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 235: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 236: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 770: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 778: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 784: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 784: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 786: warning #225-D: function "RandomizeVIDPID_Generic" declared implicitly
+"../usb_dev_keyboard.c", line 787: warning #225-D: function "USBAudioInit" declared implicitly
+"../usb_dev_keyboard.c", line 792: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 795: warning #225-D: function "USBPrinterInit" declared implicitly
+"../usb_dev_keyboard.c", line 800: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 800: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 803: warning #225-D: function "USBMIDIInit" declared implicitly
+"../usb_dev_keyboard.c", line 808: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 808: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 811: warning #225-D: function "USBDHIDGamepadInit" declared implicitly
+18 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 776: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 784: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 790: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 790: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 792: warning #225-D: function "RandomizeVIDPID_Generic" declared implicitly
+"../usb_dev_keyboard.c", line 793: warning #225-D: function "USBAudioInit" declared implicitly
+"../usb_dev_keyboard.c", line 798: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 798: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 801: warning #225-D: function "USBPrinterInit" declared implicitly
+"../usb_dev_keyboard.c", line 806: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 806: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 809: warning #225-D: function "USBMIDIInit" declared implicitly
+"../usb_dev_keyboard.c", line 814: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 814: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 817: warning #225-D: function "USBDHIDGamepadInit" declared implicitly
+18 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 757: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 764: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 832: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 840: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 848: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 856: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+32 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 757: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 764: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 832: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 840: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 848: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 856: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 857: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+33 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 757: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 764: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 832: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 833: warning #169-D: argument of type "tUSBDHIDKeyboardDevice *" is incompatible with parameter of type "uint32_t"
+"../usb_dev_keyboard.c", line 833: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 840: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 841: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 848: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 849: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 856: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 857: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+36 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 757: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 764: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 832: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 840: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 848: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 856: error #141: too many arguments in function call
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+32 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 757: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 764: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 805: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 942: error #167: too few arguments in function call
+30 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 754: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 760: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 767: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 773: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 780: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 786: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 792: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 805: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 824: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 838: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 838: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 846: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 854: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 862: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 864: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 942: error #167: too few arguments in function call
+27 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project usb_dev_keyboard ****
+
+"C:\\ti\\ccs1260\\ccs\\utils\\bin\\gmake" -k -j 8 all -O 
+ 
+Building file: "../usb_keyb_structs.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_keyb_structs.d_raw"  "../usb_keyb_structs.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_keyb_structs.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 168: error #20: identifier "g_pui8ProductString" is undefined
+"../usb_keyb_structs.c", line 182: error #20: identifier "g_pui8SerialNumberString" is undefined
+"../usb_keyb_structs.c", line 229: error #20: identifier "NUM_STRING_DESCRIPTORS_KEYBOARD" is undefined
+"../usb_keyb_structs.c", line 228: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 233: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 234: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_keyb_structs.c", line 240: error #20: identifier "GamepadHandler" is undefined
+"../usb_keyb_structs.c", line 241: error #45: expression must have pointer type
+"../usb_keyb_structs.c", line 242: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 266: error #20: identifier "AudioHandler" is undefined
+"../usb_keyb_structs.c", line 268: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 292: error #20: identifier "PrinterHandler" is undefined
+"../usb_keyb_structs.c", line 294: error #28: expression must have a constant value
+"../usb_keyb_structs.c", line 318: error #20: identifier "MIDIHandler" is undefined
+"../usb_keyb_structs.c", line 320: error #28: expression must have a constant value
+19 errors detected in the compilation of "../usb_keyb_structs.c".
+gmake: *** [usb_keyb_structs.obj] Error 1
+Building file: "../usb_dev_keyboard.c"
+Invoking: ARM Compiler
+"C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --include_path="C:/Users/josep/Downloads/PORTGREMLIN/usb_dev_keyboard" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295/examples/boards/ek-tm4c123gxl" --include_path="C:/ti/TivaWare_C_Series-2.2.0.295" --include_path="C:/ti/ccs1260/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 --define=UART_BUFFERED -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual --preproc_with_compile --preproc_dependency="usb_dev_keyboard.d_raw"  "../usb_dev_keyboard.c"
+ 
+>> Compilation failure
+subdir_rules.mk:9: recipe for target 'usb_dev_keyboard.obj' failed
+"..\usb_keyb_structs.h", line 50: error #20: identifier "tUSBAudioDevice" is undefined
+"..\usb_keyb_structs.h", line 51: error #20: identifier "tUSBPrinterDevice" is undefined
+"..\usb_keyb_structs.h", line 52: error #20: identifier "tUSBMIDIDevice" is undefined
+"..\usb_keyb_structs.h", line 53: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 77: error #148: declaration is incompatible with "tUSBDHIDKeyboardDevice g_sKeyboardTemplate" (declared at line 49 of "..\usb_keyb_structs.h")
+"../usb_dev_keyboard.c", line 238: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 239: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 240: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 241: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 242: error #760: variable "DeviceState" is not a type name
+"../usb_dev_keyboard.c", line 761: error #20: identifier "pDevice" is undefined
+"../usb_dev_keyboard.c", line 769: error #20: identifier "pDevice" is undefined
+"../usb_dev_keyboard.c", line 770: error #137: struct "tDeviceInfo" has no field "ui16VID"
+"../usb_dev_keyboard.c", line 771: error #137: struct "tDeviceInfo" has no field "ui16PID"
+"../usb_dev_keyboard.c", line 781: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 787: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 794: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 800: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 807: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 813: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 819: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 850: warning #190-D: enumerated type mixed with another type
+"../usb_dev_keyboard.c", line 858: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 864: error #20: identifier "g_sAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 864: error #20: identifier "tUSBAudioDevice" is undefined
+"../usb_dev_keyboard.c", line 866: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 872: error #20: identifier "g_sPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 872: error #20: identifier "tUSBPrinterDevice" is undefined
+"../usb_dev_keyboard.c", line 874: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 880: error #20: identifier "g_sMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 880: error #20: identifier "tUSBMIDIDevice" is undefined
+"../usb_dev_keyboard.c", line 882: error #167: too few arguments in function call
+"../usb_dev_keyboard.c", line 888: error #20: identifier "g_sGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 888: error #20: identifier "tUSBDHIDGamepadDevice" is undefined
+"../usb_dev_keyboard.c", line 890: warning #225-D: function "RandomizeVIDPID_HID" declared implicitly
+"../usb_dev_keyboard.c", line 968: error #167: too few arguments in function call
+34 errors detected in the compilation of "../usb_dev_keyboard.c".
+gmake: *** [usb_dev_keyboard.obj] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****

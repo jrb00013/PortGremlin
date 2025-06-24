@@ -76,6 +76,15 @@ extern volatile uint32_t g_ui32SysTickCount;
 extern void ReenumerateWithRandomVIDPID(void);
 extern const tUSBDHIDKeyboardDevice g_sKeyboardTemplate;
 
+uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+
+
+DeviceType g_eCurrentDevice = DEVICE_KEYBOARD;
+void *g_pActiveDevice = NULL;
+
 
 //*****************************************************************************
 // A mapping from the ASCII value received from the UART to the corresponding
@@ -215,22 +224,24 @@ volatile bool g_bDisplayUpdateRequired;
 // normal operation.
 volatile enum
 {
-    //
-    // Unconfigured.
-    //
+    // Device Unconfigured.
     STATE_UNCONFIGURED,
 
-    //
     // No keys to send and not waiting on data.
-    //
     STATE_IDLE,
 
-    //
     // Waiting on data to be sent out.
-    //
     STATE_SENDING
-}
-g_eKeyboardState = STATE_UNCONFIGURED;
+} DeviceState;
+
+
+volatile DeviceState g_eKeyboardState = STATE_UNCONFIGURED;
+volatile DeviceState g_eAudioState = STATE_UNCONFIGURED;
+volatile DeviceState g_eMidiState = STATE_UNCONFIGURED;
+volatile DeviceState g_eGamepadState = STATE_UNCONFIGURED;
+volatile DeviceState g_ePrinterState = STATE_UNCONFIGURED;
+
+// Maybe add enums for all devices.
 
 //*****************************************************************************
 // The error routine that is called if the driver library encounters an error.
@@ -257,10 +268,8 @@ __error__(char *pcFilename, uint32_t ui32Line)
 //
 // \return Returns 0 in all cases.
 
-uint32_t
-KeyboardHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgData,
-                void *pvMsgData)
-{
+uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgData,
+                void *pvMsgData) {
     switch (ui32Event)
     {
         //
@@ -340,6 +349,213 @@ KeyboardHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgData,
     return(0);
 }
 
+
+uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event,
+                        uint32_t ui32MsgParam, void *pvMsgData)
+{
+    switch (ui32Event)
+    {
+        case USB_EVENT_CONNECTED:
+        {
+            g_bConnected = true;
+            g_bSuspended = false;
+            UARTprintf("Gamepad device connected.\n");
+            break;
+        }
+
+        case USB_EVENT_DISCONNECTED:
+        {
+            g_bConnected = false;
+            UARTprintf("Gamepad device disconnected.\n");
+            break;
+        }
+
+        case USB_EVENT_TX_COMPLETE:
+        {
+            UARTprintf("Gamepad TX complete.\n");
+            break;
+        }
+
+        case USB_EVENT_SUSPEND:
+        {
+            g_bSuspended = true;
+            UARTprintf("Gamepad device suspended.\n");
+            break;
+        }
+
+        case USB_EVENT_RESUME:
+        {
+            g_bSuspended = false;
+            UARTprintf("Gamepad device resumed.\n");
+            break;
+        }
+
+        // Optional: Add gamepad specific events if applicable
+        // case USBD_HID_GAMEPAD_EVENT_INPUT:
+        // {
+        //     // Handle input report processing here
+        //     break;
+        // }
+
+        default:
+        {
+            UARTprintf("Gamepad event: 0x%x\n", ui32Event);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event,
+                      uint32_t ui32MsgParam, void *pvMsgData)
+{
+    switch (ui32Event)
+    {
+        case USB_EVENT_CONNECTED:
+        {
+            g_bConnected = true;
+            g_bSuspended = false;
+            UARTprintf("Audio device connected.\n");
+            break;
+        }
+
+        case USB_EVENT_DISCONNECTED:
+        {
+            g_bConnected = false;
+            UARTprintf("Audio device disconnected.\n");
+            break;
+        }
+
+        case USB_EVENT_TX_COMPLETE:
+        {
+            UARTprintf("Audio TX complete.\n");
+            break;
+        }
+
+        case USB_EVENT_SUSPEND:
+        {
+            g_bSuspended = true;
+            UARTprintf("Audio device suspended.\n");
+            break;
+        }
+
+        case USB_EVENT_RESUME:
+        {
+            g_bSuspended = false;
+            UARTprintf("Audio device resumed.\n");
+            break;
+        }
+
+        default:
+        {
+            UARTprintf("Audio event: 0x%x\n", ui32Event);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event,
+                        uint32_t ui32MsgParam, void *pvMsgData)
+{
+    switch (ui32Event)
+    {
+        case USB_EVENT_CONNECTED:
+        {
+            g_bConnected = true;
+            g_bSuspended = false;
+            UARTprintf("Printer device connected.\n");
+            break;
+        }
+
+        case USB_EVENT_DISCONNECTED:
+        {
+            g_bConnected = false;
+            UARTprintf("Printer device disconnected.\n");
+            break;
+        }
+
+        case USB_EVENT_TX_COMPLETE:
+        {
+            UARTprintf("Printer TX complete.\n");
+            break;
+        }
+
+        case USB_EVENT_SUSPEND:
+        {
+            g_bSuspended = true;
+            UARTprintf("Printer device suspended.\n");
+            break;
+        }
+
+        case USB_EVENT_RESUME:
+        {
+            g_bSuspended = false;
+            UARTprintf("Printer device resumed.\n");
+            break;
+        }
+
+        default:
+        {
+            UARTprintf("Printer event: 0x%x\n", ui32Event);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event,
+                     uint32_t ui32MsgParam, void *pvMsgData)
+{
+    switch (ui32Event)
+    {
+        case USB_EVENT_CONNECTED:
+        {
+            g_bConnected = true;
+            g_bSuspended = false;
+            UARTprintf("MIDI device connected.\n");
+            break;
+        }
+
+        case USB_EVENT_DISCONNECTED:
+        {
+            g_bConnected = false;
+            UARTprintf("MIDI device disconnected.\n");
+            break;
+        }
+
+        case USB_EVENT_TX_COMPLETE:
+        {
+            UARTprintf("MIDI TX complete.\n");
+            break;
+        }
+
+        case USB_EVENT_SUSPEND:
+        {
+            g_bSuspended = true;
+            UARTprintf("MIDI device suspended.\n");
+            break;
+        }
+
+        case USB_EVENT_RESUME:
+        {
+            g_bSuspended = false;
+            UARTprintf("MIDI device resumed.\n");
+            break;
+        }
+
+        default:
+        {
+            UARTprintf("MIDI event: 0x%x\n", ui32Event);
+            break;
+        }
+    }
+
+    return 0;
+}
 //***************************************************************************
 //
 // Wait for a period of time for the state to become idle.
@@ -526,13 +742,84 @@ void ConfigureUART(void) {
     UARTStdioConfig(0, 115200, 16000000);
 }
 
+
+typedef enum {
+    VIDPID_TYPE_HID,
+    VIDPID_TYPE_GENERIC
+} VIDPIDDeviceType;
+
+
 // randomize VID / PID generation
-void RandomizeVIDPID(void) {
+void RandomizeVIDPID(tUSBDHIDDevice *pHIDDevice,VIDPIDDeviceType type) {
     uint16_t vid = 0x1000 + (rand() % 0xEFFF);
     uint16_t pid = 0x1000 + (rand() % 0xEFFF);
 
-    g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16VID = vid;
-    g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16PID = pid;
+        switch (type)
+        {
+            case VIDPID_TYPE_HID:
+            {
+                tUSBDHIDDevice *pHID = (tUSBDHIDDevice *)pDevice;
+                pHID->ui16VID = vid;
+                pHID->ui16PID = pid;
+                break;
+            }
+
+            case VIDPID_TYPE_GENERIC:
+            {
+                tDeviceInfo *pGen = (tDeviceInfo *)pDevice;
+                pGen->ui16VID = vid;
+                pGen->ui16PID = pid;
+                break;
+            }
+
+            default:
+                UARTprintf("Unknown device type in RandomizeVIDPID_Universal.\n");
+                break;
+        }
+    }
+
+void USBAudioDeviceInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
+{
+    // Registers Audio class device with USB Device Controller.
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice,pDevice);
+}
+
+void USBPrinterDeviceInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice)
+{
+
+    // connect the device.
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice,pDevice);
+}
+
+void USBMIDIDeviceInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice)
+{
+    /// Initialize the USB MIDI class device
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice,pDevice);
+}
+
+void USBAudioInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
+{
+    // Initialize the USB Audio class device
+    USBAudioDeviceInit(ui32Index, pDevice);
+}
+
+
+void USBDHIDGamepadInit(uint32_t ui32Index, tUSBDHIDGamepadDevice *pDevice)
+{
+    // Initialize the USB HID Gamepad device
+    USBDHIDInit(ui32Index, (tUSBDHIDDevice *)pDevice);
+}
+
+void USBPrinterInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice)
+{
+    // Initialize the USB Printer class device
+    USBPrinterDeviceInit(ui32Index, pDevice);
+}
+
+void USBMIDIInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice)
+{
+    // Initialize the USB MIDI class device
+    USBMIDIDeviceInit(ui32Index, pDevice);
 }
 
 void ReenumerateWithRandomVIDPID(void)
@@ -542,11 +829,71 @@ void ReenumerateWithRandomVIDPID(void)
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);              // Small delay
     USBDevConnect(USB0_BASE);
-    RandomizeVIDPID();                               // Generate new VID/PID
+    RandomizeVIDPID(&g_sKeyboardDevice.sPrivateData.sHIDDevice, VIDPID_TYPE_HID);                             // Generate new VID/PID
     UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
         g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16VID,
         g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16PID);
+
+    // maybe add switch statement here to initialize what device
     USBDHIDKeyboardInit(0, &g_sKeyboardDevice);    // Re-initialize USB with new IDs
+}
+
+
+
+void CycleDeviceType(void)
+{
+    // Disconnect USB (simulate unplug)
+    USBDevDisconnect(USB0_BASE);
+    SysCtlDelay(SysCtlClockGet() / 3);  // ~0.3s delay
+
+    // Advance to next device
+    g_eCurrentDevice = (g_eCurrentDevice + 1) % NUM_DEVICE_TYPES;
+
+    switch (g_eCurrentDevice)
+    {
+        case DEVICE_KEYBOARD:
+            UARTprintf("Switching to Keyboard...\n");
+            memcpy(&g_sKeyboardDevice, &g_sKeyboardTemplate, sizeof(tUSBDHIDKeyboardDevice));
+            g_pActiveDevice = &g_sKeyboardDevice;
+            RandomizeVIDPID(&g_sKeyboardDevice.sPrivateData.sHIDDevice);
+            USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
+            break;
+
+        case DEVICE_AUDIO:
+            UARTprintf("Switching to Audio...\n");
+            memcpy(&g_sAudioDevice, &g_sAudioTemplate, sizeof(tUSBAudioDevice));
+            g_pActiveDevice = &g_sAudioDevice;
+            RandomizeVIDPID(&g_sAudioDevice); // Optional
+            USBAudioInit(0, &g_sAudioDevice); // You'll define this
+            break;
+
+        case DEVICE_PRINTER:
+            UARTprintf("Switching to Printer...\n");
+            memcpy(&g_sPrinterDevice, &g_sPrinterTemplate, sizeof(tUSBPrinterDevice));
+            g_pActiveDevice = &g_sPrinterDevice;
+            RandomizeVIDPID(&g_sPrinterDevice); // Optional
+            USBPrinterInit(0, &g_sPrinterDevice); // You'll define this
+            break;
+
+        case DEVICE_MIDI:
+            UARTprintf("Switching to MIDI...\n");
+            memcpy(&g_sMIDIDevice, &g_sMIDITemplate, sizeof(tUSBMIDIDevice));
+            g_pActiveDevice = &g_sMIDIDevice;
+            RandomizeVIDPID(&g_sMIDIDevice); // Optional
+            USBMIDIInit(0, &g_sMIDIDevice); // You'll define this
+            break;
+
+        case DEVICE_GAMEPAD:
+            UARTprintf("Switching to Gamepad...\n");
+            memcpy(&g_sGamepadDevice, &g_sGamepadTemplate, sizeof(tUSBDHIDGamepadDevice));
+            g_pActiveDevice = &g_sGamepadDevice;
+            RandomizeVIDPID_HID(&g_sGamepadDevice.sPrivateData.sHIDDevice);
+            USBDHIDGamepadInit(0, &g_sGamepadDevice); // You'll define this
+            break;
+    }
+
+    // Reconnect USB to force re-enumeration
+    USBDevConnect(USB0_BASE);
 }
 
 int main(void) {
@@ -718,8 +1065,9 @@ int main(void) {
                 }
                 else
                 {
-                    SendString("You have pressed the SW1 button.\n"
+                    SendString("You have pressed the SW1 button... Cycling Device Descriptors. \n"
                                "Try pressing the SW2 button.\n\n");
+                    CycleDeviceType();
                 }
             }
             else if(BUTTON_PRESSED(RIGHT_BUTTON, ui8Buttons,

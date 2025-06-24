@@ -1,0 +1,21 @@
+# Ignore build outputs
+**/Debug/
+**/*.out
+**/*.bin
+**/*.map
+**/*.obj
+**/*.o
+**/*.d
+
+# Ignore IDE/temporary files
+**/*.ccxml
+**/*.ini*
+RemoteSystemsTempFiles/
+
+# Python junk
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+Thumbs.db

@@ -38,6 +38,12 @@
 #define USB_PID_PRINTER  0x0202
 #define USB_PID_MIDI     0x0203
 
+extern uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+extern uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+extern uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+extern uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+extern uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+
 //****************************************************************************
 //
 // The languages supported by this device.
@@ -120,7 +126,7 @@ const uint8_t g_pui8ProductStringMIDI[] =
 // The serial number string.
 //
 //****************************************************************************
-const uint8_t g_pui8SeriailNumberString[] =
+const uint8_t g_pui8SerialNumberString[] =
 {
     (8 + 1) * 2,
     USB_DTYPE_STRING,
@@ -165,13 +171,13 @@ const uint8_t * const g_ppui8StringDescriptorsKeyboard[] =
 {
     g_pui8LangDescriptor,
     g_pui8ManufacturerString,
-    g_pui8ProductString,
-    g_pui8SeriailNumberString,
+    g_pui8ProductStringKeyboard,
+    g_pui8SerialNumberString,
     g_pui8HIDInterfaceString,
     g_pui8ConfigString
 };
 
-#define NUM_STRING_DESCRIPTORS (sizeof(g_ppui8StringDescriptorsKeyboard) /            \
+#define NUM_STRING_DESCRIPTORS_KEYBOARD (sizeof(g_ppui8StringDescriptorsKeyboard) /            \
                                 sizeof(uint8_t *))
 
 const uint8_t * const g_ppui8StringDescriptorsAudio[] =
@@ -215,7 +221,7 @@ const uint8_t * const g_ppui8StringDescriptorsMIDI[] =
 // The HID keyboard device initialization and customization structures.
 //
 //*****************************************************************************
-// Keyboard Device Structure
+// Keyboard Device Attributes
 tUSBDHIDKeyboardDevice g_sKeyboardDevice;
 tUSBDHIDKeyboardDevice g_sKeyboardTemplate =
 {
@@ -228,8 +234,7 @@ tUSBDHIDKeyboardDevice g_sKeyboardTemplate =
     g_ppui8StringDescriptorsKeyboard,
     NUM_STRING_DESCRIPTORS_KEYBOARD
 };
-
-// Gamepad Device Structure
+// Gamepad Device Attributes
 tUSBDHIDGamepadDevice g_sGamepadDevice;
 tUSBDHIDGamepadDevice g_sGamepadTemplate =
 {
@@ -243,19 +248,8 @@ tUSBDHIDGamepadDevice g_sGamepadTemplate =
     NUM_STRING_DESCRIPTORS_GAMEPAD
 };
 
-// Audio Device Structure
-typedef struct
-{
-    uint16_t ui16VID;
-    uint16_t ui16PID;
-    uint16_t ui16MaxPowermA;
-    uint8_t  ui8PwrAttributes;
-    void (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-    void *pvCBData;
-    const uint8_t * const *ppui8StringDescriptors;
-    uint32_t ui32NumStringDescriptors;
-} tUSBAudioDevice;
 
+// Audio Device Attributes
 tUSBAudioDevice g_sAudioDevice;
 tUSBAudioDevice g_sAudioTemplate =
 {
@@ -269,19 +263,7 @@ tUSBAudioDevice g_sAudioTemplate =
     NUM_STRING_DESCRIPTORS_AUDIO
 };
 
-// Printer Device Structure
-typedef struct
-{
-    uint16_t ui16VID;
-    uint16_t ui16PID;
-    uint16_t ui16MaxPowermA;
-    uint8_t  ui8PwrAttributes;
-    void (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-    void *pvCBData;
-    const uint8_t * const *ppui8StringDescriptors;
-    uint32_t ui32NumStringDescriptors;
-} tUSBPrinterDevice;
-
+// Printer Device Attributes
 tUSBPrinterDevice g_sPrinterDevice;
 tUSBPrinterDevice g_sPrinterTemplate =
 {
@@ -295,19 +277,7 @@ tUSBPrinterDevice g_sPrinterTemplate =
     NUM_STRING_DESCRIPTORS_PRINTER
 };
 
-// MIDI Device Structure
-typedef struct
-{
-    uint16_t ui16VID;
-    uint16_t ui16PID;
-    uint16_t ui16MaxPowermA;
-    uint8_t  ui8PwrAttributes;
-    void (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-    void *pvCBData;
-    const uint8_t * const *ppui8StringDescriptors;
-    uint32_t ui32NumStringDescriptors;
-} tUSBMIDIDevice;
-
+// MIDI Device Attributes
 tUSBMIDIDevice g_sMIDIDevice;
 tUSBMIDIDevice g_sMIDITemplate =
 {

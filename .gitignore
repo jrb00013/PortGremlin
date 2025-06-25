@@ -19,3 +19,11 @@ __pycache__/
 # OS junk
 .DS_Store
 Thumbs.db
+
+# IDE metadata folders
+.metadata/
+.jxbrowser.userdata/
+
+# Ignore metadata and user data folders inside FinalProject
+FinalProject/.metadata/
+FinalProject/.jxbrowser.userdata/

@@ -34,6 +34,71 @@ typedef enum {
     NUM_DEVICE_TYPES
 } DeviceType;
 
+// My HID Keyboard Struct Wrapper
+
+typedef struct
+{
+    uint16_t ui16VID;
+    uint16_t ui16PID;
+    tUSBDHIDKeyboardDevice device;
+} tMyKeyboardDevice;
+
+
+// Gamepad Device Structure
+typedef struct
+{
+    uint16_t ui16VID;   // Vendor ID
+    uint16_t ui16PID;   // Product ID
+    uint16_t ui16MaxPowermA;  // Max power in mA
+    uint8_t  ui8PwrAttributes; // Power attributes (e.g. self-powered, remote wakeup)
+    uint32_t (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData); // Event handler
+    void *pvCBData; // Callback data (pointer to instance struct)
+    const uint8_t * const *ppui8StringDescriptors; // Pointer to string descriptor table
+    uint32_t ui32NumStringDescriptors; // Number of string descriptors
+} tUSBDHIDGamepadDevice;
+
+
+// Audio Device Structure
+typedef struct
+{
+    uint16_t ui16VID;
+    uint16_t ui16PID;
+    uint16_t ui16MaxPowermA;
+    uint8_t  ui8PwrAttributes;
+    uint32_t (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+    void *pvCBData;
+    const uint8_t * const *ppui8StringDescriptors;
+    uint32_t ui32NumStringDescriptors;
+} tUSBAudioDevice;
+
+
+// Printer Device Structure
+typedef struct
+{
+    uint16_t ui16VID;
+    uint16_t ui16PID;
+    uint16_t ui16MaxPowermA;
+    uint8_t  ui8PwrAttributes;
+    uint32_t (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+    void *pvCBData;
+    const uint8_t * const *ppui8StringDescriptors;
+    uint32_t ui32NumStringDescriptors;
+} tUSBPrinterDevice;
+
+
+// MIDI Device Structure
+typedef struct
+{
+    uint16_t ui16VID;
+    uint16_t ui16PID;
+    uint16_t ui16MaxPowermA;
+    uint8_t  ui8PwrAttributes;
+    uint32_t  (*pfnHandler)(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
+    void *pvCBData;
+    const uint8_t * const *ppui8StringDescriptors;
+    uint32_t ui32NumStringDescriptors;
+} tUSBMIDIDevice;
+
 
 extern DeviceType g_eCurrentDevice;
 extern void *g_pActiveDevice;
@@ -54,5 +119,7 @@ extern tUSBDHIDGamepadDevice g_sGamepadTemplate;
 
 
 extern const uint8_t * const g_ppui8StringDescriptors[];
+extern const uint8_t * const g_ppui8StringDescriptorsKeyboard[];
+
 
 #endif

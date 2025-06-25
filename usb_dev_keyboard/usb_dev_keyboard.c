@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stddef.h>
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_gpio.h"
@@ -70,19 +71,44 @@
 //*****************************************************************************
 // The system tick timer period.
 #define SYSTICKS_PER_SECOND     100
+#define USB_RESUME_DURATION_MS 15
 // #define USB0_BASE  0x40050000 // just in case the usb0_base isn't defined
 
+typedef enum {
+    VIDPID_TYPE_KEYBOARD,
+    VIDPID_TYPE_AUDIO,
+    VIDPID_TYPE_GAMEPAD,
+    VIDPID_TYPE_MIDI,
+    VIDPID_TYPE_PRINTER,
+    VIDPID_TYPE_GENERIC
+} VIDPIDDeviceType;
+
+
 extern volatile uint32_t g_ui32SysTickCount;
-extern void ReenumerateWithRandomVIDPID(void);
-extern const tUSBDHIDKeyboardDevice g_sKeyboardTemplate;
+extern void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType);
+extern tUSBAudioDevice g_sAudioDevice;
+extern tUSBMIDIDevice g_sMIDIDevice;
+extern tUSBPrinterDevice g_sPrinterDevice;
+extern tUSBDHIDGamepadDevice g_sGamepadDevice;
+extern const uint8_t g_pui8SerialNumberString[];
 
 uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
 uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
 uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
 uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
 
+void USBAudioDeviceInit(uint32_t ui32Index, tUSBAudioDevice *pDevice);
+void USBPrinterDeviceInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice);
+void USBMIDIDeviceInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice);
+void USBAudioInit(uint32_t ui32Index, tUSBAudioDevice *pDevice);
+void USBDHIDGamepadInit(uint32_t ui32Index, tUSBDHIDGamepadDevice *pDevice);
+void USBPrinterInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice);
+void USBMIDIInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice);
+void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType);
+void CycleDeviceType(void);
 
 DeviceType g_eCurrentDevice = DEVICE_KEYBOARD;
+VIDPIDDeviceType g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
 void *g_pActiveDevice = NULL;
 
 
@@ -219,10 +245,12 @@ volatile uint32_t g_ui32SysTickCount;
 
 volatile bool g_bDisplayUpdateRequired;
 
+
+
 //*****************************************************************************
 // This enumeration holds the various states that the keyboard can be in during
 // normal operation.
-volatile enum
+typedef enum
 {
     // Device Unconfigured.
     STATE_UNCONFIGURED,
@@ -611,9 +639,7 @@ bool WaitForSendIdle(uint_fast32_t ui32TimeoutTicks)
 // Sends a string of characters via the USB HID keyboard interface.
 //
 //*****************************************************************************
-void
-SendString(char *pcStr)
-{
+void SendString(char *pcStr) {
     uint32_t ui32Char;
 
     //
@@ -699,24 +725,47 @@ SendString(char *pcStr)
 
 //*****************************************************************************
 // This is the interrupt handler for the SysTick interrupt.  It is used to
-// update our local tick count which, in turn, is used to check for transmit
+// update local tick count which, in turn, is used to check for transmit
 // timeouts.
 
 // Probably will have to call this in main eventually
-// the SysTickIntHandler isn't being called in main or actually anywhere else in the program
-// and thats where my reenumerate with random vid and pid function is
+// The SysTickIntHandler isn't being called in main or actually anywhere else in the program
+// And thats where my reenumerate with random vid and pid function is
 
 void SysTickIntHandler(void) {
-    static uint32_t secondsCounter = 0;
+    static uint32_t tickCounter = 0;
+    g_ui32SysTickCount++;  // If you have a global SysTick counter
 
-    g_ui32SysTickCount++;  // Increment your global SysTick counter if used
-
-    secondsCounter++;
-
-    if(secondsCounter >= 5)  // Every 0.05 seconds
+    tickCounter++;
+    if (tickCounter >= 5)  // Every 0.05 seconds (assuming SysTick fires at 100Hz)
     {
-        secondsCounter = 0;  // Reset counter
-        ReenumerateWithRandomVIDPID();  // Perform USB disconnect + random VID/PID + reconnect
+        tickCounter = 0;
+
+        // Call re-enumeration with the current device type
+        switch (g_eCurrentDevice)
+        {
+            case DEVICE_KEYBOARD:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_KEYBOARD);
+                break;
+            case DEVICE_AUDIO:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_AUDIO);
+                break;
+            case DEVICE_GAMEPAD:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_GAMEPAD);
+                break;
+            case DEVICE_MIDI:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_MIDI);
+                break;
+            case DEVICE_PRINTER:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_PRINTER);
+                break;
+            default:
+                // fallback or error handler
+                break;
+        }
+
+        // Advance to the next device type for next time
+        g_eCurrentDevice = (DeviceType)(((int)g_eCurrentDevice + 1) % (int)NUM_DEVICE_TYPES);
     }
 }
 
@@ -743,40 +792,136 @@ void ConfigureUART(void) {
 }
 
 
-typedef enum {
-    VIDPID_TYPE_HID,
-    VIDPID_TYPE_GENERIC
-} VIDPIDDeviceType;
-
-
-// randomize VID / PID generation
-void RandomizeVIDPID(tUSBDHIDDevice *pHIDDevice,VIDPIDDeviceType type) {
+void PrepareDevice(VIDPIDDeviceType type)
+{
     uint16_t vid = 0x1000 + (rand() % 0xEFFF);
     uint16_t pid = 0x1000 + (rand() % 0xEFFF);
 
-        switch (type)
+    typedef enum {
+        VIDPID_TYPE_KEYBOARD,
+        VIDPID_TYPE_AUDIO,
+        VIDPID_TYPE_GAMEPAD,
+        VIDPID_TYPE_MIDI,
+        VIDPID_TYPE_PRINTER,
+        VIDPID_TYPE_GENERIC
+    } VIDPIDDeviceType;
+
+    //tUSBDHIDKeyboardDevice sDevice;
+
+    switch (type)
+    {
+        case VIDPID_TYPE_KEYBOARD:
         {
-            case VIDPID_TYPE_HID:
-            {
-                tUSBDHIDDevice *pHID = (tUSBDHIDDevice *)pDevice;
-                pHID->ui16VID = vid;
-                pHID->ui16PID = pid;
-                break;
-            }
+           // Create modifiable buffer copy of keyboard device template
+           uint8_t deviceBuffer[sizeof(tUSBDHIDKeyboardDevice)];
+           memcpy(deviceBuffer, &g_sKeyboardTemplate, sizeof(g_sKeyboardTemplate));
+           // Patch VID and PID inside buffer
+           uint16_t *pVID = (uint16_t *)(deviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16VID));
+           uint16_t *pPID = (uint16_t *)(deviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16PID));
+           *pVID = vid;
+           *pPID = pid;
 
-            case VIDPID_TYPE_GENERIC:
-            {
-                tDeviceInfo *pGen = (tDeviceInfo *)pDevice;
-                pGen->ui16VID = vid;
-                pGen->ui16PID = pid;
-                break;
-            }
+           // Initialize device using patched buffer
+           USBDHIDKeyboardInit(0, (tUSBDHIDKeyboardDevice *)deviceBuffer);
+           break;
+         }
 
-            default:
-                UARTprintf("Unknown device type in RandomizeVIDPID_Universal.\n");
-                break;
+        case VIDPID_TYPE_AUDIO:
+        {
+            static tUSBAudioDevice aDevice;
+            aDevice = g_sAudioTemplate;
+            aDevice.ui16VID = vid;
+            aDevice.ui16PID = pid;
+            USBAudioInit(0, &aDevice);
+            break;
         }
+
+        case VIDPID_TYPE_MIDI:
+        {
+            static tUSBMIDIDevice mDevice;
+            mDevice = g_sMIDITemplate;
+            mDevice.ui16VID = vid;
+            mDevice.ui16PID = pid;
+            USBMIDIInit(0, &mDevice);
+            break;
+        }
+
+        case VIDPID_TYPE_PRINTER:
+        {
+            static tUSBPrinterDevice pDevice;
+            pDevice = g_sPrinterTemplate;
+            pDevice.ui16VID = vid;
+            pDevice.ui16PID = pid;
+            USBPrinterInit(0, &pDevice);
+            break;
+        }
+
+        default:
+            UARTprintf("Unknown device type in PrepareDevice.\n");
+            break;
     }
+}
+
+void RandomizeVIDPID(void *pDevice, VIDPIDDeviceType type)
+{
+    uint16_t vid = 0x1000 + (rand() % 0xEFFF);
+    uint16_t pid = 0x1000 + (rand() % 0xEFFF);
+
+    switch (type)
+    {
+    case VIDPID_TYPE_KEYBOARD:
+           {
+               // Copy template into a temporary buffer
+               uint8_t deviceBuffer[sizeof(tUSBDHIDKeyboardDevice)];
+               memcpy(deviceBuffer, &g_sKeyboardTemplate, sizeof(g_sKeyboardTemplate));
+
+               // Patch VID/PID
+               uint16_t *pVID = (uint16_t *)(deviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16VID));
+               uint16_t *pPID = (uint16_t *)(deviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16PID));
+               *pVID = vid;
+               *pPID = pid;
+
+               // Overwrite pDevice with the patched version
+               memcpy(pDevice, deviceBuffer, sizeof(tUSBDHIDKeyboardDevice));
+               break;
+           }
+
+        case VIDPID_TYPE_AUDIO:
+        {
+            tUSBAudioDevice *pAudio = (tUSBAudioDevice *)pDevice;
+            pAudio->ui16VID = vid;
+            pAudio->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_MIDI:
+        {
+            tUSBMIDIDevice *pMIDI = (tUSBMIDIDevice *)pDevice;
+            pMIDI->ui16VID = vid;
+            pMIDI->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_PRINTER:
+        {
+            tUSBPrinterDevice *pPrinter = (tUSBPrinterDevice *)pDevice;
+            pPrinter->ui16VID = vid;
+            pPrinter->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_GENERIC:
+        {
+            // Generic struct for unrecognized devices
+            // Error handling and protection
+            break;
+        }
+
+        default:
+            UARTprintf("Unknown device type in RandomizeVIDPID.\n");
+            break;
+    }
+}
 
 void USBAudioDeviceInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
 {
@@ -822,20 +967,117 @@ void USBMIDIInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice)
     USBMIDIDeviceInit(ui32Index, pDevice);
 }
 
-void ReenumerateWithRandomVIDPID(void)
+void USBRemoteWakeup(void)
+{
+    // Only do this if the bus is actually suspended
+    if(g_bSuspended)
+    {
+        // Initiate remote wake-up signaling via USB controller
+        USBDCDRemoteWakeupRequest(0);
+
+        UARTprintf("Sent USB remote wake-up signal\n\r");
+    }
+}
+
+void USBDeviceRemoteWakeupRequest(void *pDevice)
+{
+    if (g_bSuspended)
+    {
+
+        USBDCDRemoteWakeupRequest(0);
+        UARTprintf("Sent USB remote wake-up signal\n\r");
+    }
+}
+
+void USBGamepadRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+// Stub function for Audio remote wakeup
+void USBAudioRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+
+}
+
+// Stub function for MIDI remote wakeup
+void USBMIDIRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+// Stub function for Printer remote wakeup
+void USBPrinterRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+
+
+void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
 {
     UARTprintf("Re-enumerating USB with new VID/PID...\n\r");
-    USBDHIDKeyboardTerm(&g_sKeyboardDevice);        // Disconnect USB
+
+    // Disconnect USB (this probably depends on device, but let's do generic disconnect)
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);              // Small delay
-    USBDevConnect(USB0_BASE);
-    RandomizeVIDPID(&g_sKeyboardDevice.sPrivateData.sHIDDevice, VIDPID_TYPE_HID);                             // Generate new VID/PID
-    UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
-        g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16VID,
-        g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16PID);
 
-    // maybe add switch statement here to initialize what device
-    USBDHIDKeyboardInit(0, &g_sKeyboardDevice);    // Re-initialize USB with new IDs
+    // Now switch on the device type for specific actions
+    switch(deviceType)
+    {
+        case VIDPID_TYPE_KEYBOARD:
+            USBDHIDKeyboardTerm(&g_sKeyboardDevice);  // Terminate keyboard USB
+            RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
+            UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
+                g_sKeyboardDevice.ui16VID,
+                g_sKeyboardDevice.ui16PID);
+            USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
+            break;
+
+        case VIDPID_TYPE_AUDIO:
+            // Terminate audio device if you have such a function, else skip
+            RandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
+            UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
+                g_sAudioDevice.ui16VID,
+                g_sAudioDevice.ui16PID);
+            USBAudioInit(0, &g_sAudioDevice);
+            break;
+
+        case VIDPID_TYPE_GAMEPAD:
+            // Terminate gamepad if you have such a function, else skip
+            RandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
+            UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
+                g_sGamepadDevice.ui16VID,
+                g_sGamepadDevice.ui16PID);
+            USBDHIDGamepadInit(0, &g_sGamepadDevice);
+            break;
+
+        case VIDPID_TYPE_MIDI:
+            // Terminate MIDI if you have such a function, else skip
+            RandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
+            UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
+                g_sMIDIDevice.ui16VID,
+                g_sMIDIDevice.ui16PID);
+            USBMIDIInit(0, &g_sMIDIDevice);
+            break;
+
+        case VIDPID_TYPE_PRINTER:
+            // Terminate Printer if you have such a function, else skip
+            RandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
+            UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
+                g_sPrinterDevice.ui16VID,
+                g_sPrinterDevice.ui16PID);
+            USBPrinterInit(0, &g_sPrinterDevice);
+            break;
+
+        default:
+            UARTprintf("Unknown device type for re-enumeration.\n\r");
+            break;
+    }
+
+    // Reconnect USB to force re-enumeration
+    USBDevConnect(USB0_BASE);
 }
 
 
@@ -847,7 +1089,7 @@ void CycleDeviceType(void)
     SysCtlDelay(SysCtlClockGet() / 3);  // ~0.3s delay
 
     // Advance to next device
-    g_eCurrentDevice = (g_eCurrentDevice + 1) % NUM_DEVICE_TYPES;
+    g_eCurrentDevice = (DeviceType)(((int)g_eCurrentDevice + 1) % (int)NUM_DEVICE_TYPES);
 
     switch (g_eCurrentDevice)
     {
@@ -855,7 +1097,7 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Keyboard...\n");
             memcpy(&g_sKeyboardDevice, &g_sKeyboardTemplate, sizeof(tUSBDHIDKeyboardDevice));
             g_pActiveDevice = &g_sKeyboardDevice;
-            RandomizeVIDPID(&g_sKeyboardDevice.sPrivateData.sHIDDevice);
+            RandomizeVIDPID(&g_sKeyboardDevice.sPrivateData.sHIDDevice,VIDPID_TYPE_KEYBOARD);
             USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
             break;
 
@@ -863,38 +1105,41 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Audio...\n");
             memcpy(&g_sAudioDevice, &g_sAudioTemplate, sizeof(tUSBAudioDevice));
             g_pActiveDevice = &g_sAudioDevice;
-            RandomizeVIDPID(&g_sAudioDevice); // Optional
-            USBAudioInit(0, &g_sAudioDevice); // You'll define this
+            RandomizeVIDPID(&g_sAudioDevice,VIDPID_TYPE_AUDIO);
+            USBAudioInit(0, &g_sAudioDevice);
             break;
 
         case DEVICE_PRINTER:
             UARTprintf("Switching to Printer...\n");
             memcpy(&g_sPrinterDevice, &g_sPrinterTemplate, sizeof(tUSBPrinterDevice));
             g_pActiveDevice = &g_sPrinterDevice;
-            RandomizeVIDPID(&g_sPrinterDevice); // Optional
-            USBPrinterInit(0, &g_sPrinterDevice); // You'll define this
+            RandomizeVIDPID(&g_sPrinterDevice,VIDPID_TYPE_PRINTER);
+            USBPrinterInit(0, &g_sPrinterDevice);
             break;
 
         case DEVICE_MIDI:
             UARTprintf("Switching to MIDI...\n");
             memcpy(&g_sMIDIDevice, &g_sMIDITemplate, sizeof(tUSBMIDIDevice));
             g_pActiveDevice = &g_sMIDIDevice;
-            RandomizeVIDPID(&g_sMIDIDevice); // Optional
-            USBMIDIInit(0, &g_sMIDIDevice); // You'll define this
+            RandomizeVIDPID(&g_sMIDIDevice,VIDPID_TYPE_MIDI);
+            USBMIDIInit(0, &g_sMIDIDevice);
             break;
 
         case DEVICE_GAMEPAD:
             UARTprintf("Switching to Gamepad...\n");
             memcpy(&g_sGamepadDevice, &g_sGamepadTemplate, sizeof(tUSBDHIDGamepadDevice));
             g_pActiveDevice = &g_sGamepadDevice;
-            RandomizeVIDPID_HID(&g_sGamepadDevice.sPrivateData.sHIDDevice);
-            USBDHIDGamepadInit(0, &g_sGamepadDevice); // You'll define this
+            RandomizeVIDPID(&g_sGamepadDevice,VIDPID_TYPE_GAMEPAD);
+            USBDHIDGamepadInit(0, &g_sGamepadDevice);
             break;
     }
 
     // Reconnect USB to force re-enumeration
     USBDevConnect(USB0_BASE);
 }
+
+
+
 
 int main(void) {
     uint_fast32_t ui32LastTickCount;
@@ -965,13 +1210,13 @@ int main(void) {
     // Memory copy to modify
 
      memcpy(&g_sKeyboardDevice, &g_sKeyboardTemplate, sizeof(tUSBDHIDKeyboardDevice));
-     RandomizeVIDPID(); // randomizing VID / PID for overload
+    // RandomizeVIDPID(); // randomizing VID / PID for overall load
 
     // g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16VID = 0x1CBE; // default testing
     // g_sKeyboardDevice.sPrivateData.sHIDDevice.ui16PID =  0x0003;  // default testing
 
     // Manufacturing information
-    g_sKeyboardDevice.sPrivateData.sHIDDevice.ppui8StringDescriptors = g_ppui8StringDescriptors;
+    g_sKeyboardDevice.sPrivateData.sHIDDevice.ppui8StringDescriptors = g_ppui8StringDescriptorsKeyboard;
 
     // Pass device information to the USB HID device class driver,
     // Initialize the USB controller, and connect the device to the bus.
@@ -983,7 +1228,26 @@ int main(void) {
     MAP_SysTickPeriodSet(MAP_SysCtlClockGet() / SYSTICKS_PER_SECOND);
     MAP_SysTickIntEnable();
     MAP_SysTickEnable();
+    PrepareDevice(VIDPID_TYPE_KEYBOARD);
 
+    switch(g_eCurrentDeviceType)
+    {
+        case VIDPID_TYPE_KEYBOARD:
+            USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
+            break;
+        case VIDPID_TYPE_AUDIO:
+            USBAudioInit(0, &g_sAudioDevice);
+            break;
+        case VIDPID_TYPE_MIDI:
+            USBMIDIInit(0, &g_sMIDIDevice);
+            break;
+        case VIDPID_TYPE_PRINTER:
+            USBPrinterInit(0, &g_sPrinterDevice);
+            break;
+        default:
+            UARTprintf("Unknown device type on startup.\n\r");
+            break;
+    }
     //
     // The main loop starts here.  We begin by waiting for a host connection
     // then drop into the main keyboard handling section.  If the host
@@ -1059,16 +1323,34 @@ int main(void) {
                 // out an instructional message.
                 //
                 if(g_bSuspended)
-                {
-                    USBDHIDKeyboardRemoteWakeupRequest(
-                                                   (void *)&g_sKeyboardDevice);
-                }
-                else
-                {
-                    SendString("You have pressed the SW1 button... Cycling Device Descriptors. \n"
-                               "Try pressing the SW2 button.\n\n");
-                    CycleDeviceType();
-                }
+                    {
+                        // Wake up the bus with the current device struct pointer
+                        switch(g_eCurrentDeviceType)
+                        {
+                            case VIDPID_TYPE_KEYBOARD:
+                                USBDHIDKeyboardRemoteWakeupRequest(&g_sKeyboardDevice);
+                                break;
+                            case VIDPID_TYPE_AUDIO:
+                                USBAudioRemoteWakeupRequest(&g_sAudioDevice);
+                                break;
+                            case VIDPID_TYPE_GAMEPAD:
+                                 USBGamepadRemoteWakeupRequest(&g_sAudioDevice);
+                                 break;
+                            case VIDPID_TYPE_MIDI:
+                                USBMIDIRemoteWakeupRequest(&g_sMIDIDevice);
+                                break;
+                            case VIDPID_TYPE_PRINTER:
+                                USBPrinterRemoteWakeupRequest(&g_sPrinterDevice);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        SendString("You have pressed the SW1 button... Cycling Device Descriptors. \nTry pressing the SW2 button.\n\n");
+                        CycleDeviceType();
+                    }
             }
             else if(BUTTON_PRESSED(RIGHT_BUTTON, ui8Buttons,
                                    ui8ButtonsChanged))

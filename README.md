@@ -1,6 +1,6 @@
 # PortGremlin
 
-PortGremlin is a USB device firmware based off the usb_dev_keyboard template by TI's Tiva C series electronics, designed to continuously change its USB identity by dynamically switching USB device descriptors on the fly. It cycles through various USB device classes such as HID keyboard, audio device, printer, gamepad, and MIDI controller while spoofing random Vendor ID (VID) and Product ID (PID) values. The objective is to confuse the host operating system by flooding it with fake USB devices, breaking assumptions made by security software, autorun logic, or device fingerprinting techniques.
+PortGremlin is firmware that is based off the usb_dev_keyboard template by TI's Tiva C series electronics, designed to continuously change its USB identity by dynamically switching USB device descriptors on the fly. It cycles through various USB device classes such as HID keyboard, audio device, printer, gamepad, and MIDI controller while spoofing random Vendor ID (VID) and Product ID (PID) values. The objective is to confuse the host operating system by flooding it with fake USB devices, breaking assumptions made by security software, autorun logic, or device fingerprinting techniques.
 
 - Dynamic USB descriptor switching  
 - Randomized VID/PID spoofing  
@@ -25,4 +25,6 @@ PortGremlin is a USB device firmware based off the usb_dev_keyboard template by 
 - **Theyscon USB Descriptor Dumper** (optional)  
 - **Python** — For generating random VID/PID and descriptor payloads dynamically  
 - A host PC running Windows, Linux, or macOS for device testing  
+
+
 

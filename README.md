@@ -1,19 +1,41 @@
 # PortGremlin
 
-PortGremlin is a **closed-loop USB enumeration attack platform** — firmware on a TM4C123 LaunchPad that fingerprints your host, evolves attack genomes, and coordinates with a host-side orchestrator that watches kernel USB errors and escalates autonomously.
+PortGremlin is a **closed-loop USB enumeration attack platform** — firmware on a TM4C123 LaunchPad that fingerprints your host, evolves attack genomes, and coordinates with a host-side orchestrator. **No hardware?** Use the **Virtual Lab** GUI simulator.
 
 **Authorized security research only.**
 
 ## One Command
 
 ```sh
-./setup.sh          # install everything
-./setup.sh --run    # launch Overwatch (dashboard + orchestrator)
+./setup.sh          # interactive — choose Virtual Lab or Hardware Flash
+./setup.sh --run    # launch (prompts which mode)
 ```
 
-Open **http://127.0.0.1:8765** for the live attack dashboard.
+### Modes
 
-## Platform Layers
+| Mode | Command | What you get |
+|------|---------|--------------|
+| **Virtual Lab** | `./setup.sh --virtual` | GUI simulation — host, LaunchPad, USB bus, personas, evolution |
+| **Hardware Flash** | `./setup.sh --flash` | ARM toolchain, firmware build, optional flash |
+| **Run Virtual** | `./setup.sh --run --virtual` | Open the GUI simulator |
+| **Run Hardware** | `./setup.sh --run --flash` | Overwatch monitor + dashboard at `:8765` |
+
+## Virtual Lab (GUI)
+
+Interactive visualization with no LaunchPad required:
+
+- Animated USB bus between host and LaunchPad
+- Live enumeration storm with VID/PID/class changes
+- Oracle host fingerprinting (Windows/Linux/macOS)
+- Gremlin Brain escalation, genetic evolution, personas
+- Host pain meter, device cache, kernel error simulation
+- One-click Overdrive, Brain, Evolve, Mimic deploy
+
+```sh
+./setup.sh --virtual    # installs python3-tk + deps, launches GUI
+```
+
+## Hardware Platform
 
 | Layer | Capability |
 |---|---|
@@ -60,10 +82,10 @@ Open **http://127.0.0.1:8765** for the live attack dashboard.
 ## Host Tools
 
 ```sh
-./setup.sh --run                         # Overwatch + dashboard
-./setup.sh --run --no-auto               # monitor only
-python3 tools/portgremlin-cli.py         # manual serial control
-python3 tools/gremlin-oracle.py         # dual-perspective monitor
+./setup.sh --run --virtual             # GUI Virtual Lab
+./setup.sh --run --flash               # Overwatch + dashboard
+python3 tools/portgremlin-cli.py       # manual serial control
+python3 tools/gremlin-oracle.py        # dual-perspective monitor
 ```
 
 ## Build & Flash
@@ -91,10 +113,12 @@ usb_dev_keyboard/
   portgremlin_mimic.c       Real device identity vault
   portgremlin_uart.c        Command interface
 tools/
-  portgremlin-overwatch.py  Closed-loop host orchestrator + dashboard
+  portgremlin-simulator.py  Virtual Lab GUI
+  sim_engine.py             Firmware behavior simulation
+  portgremlin-overwatch.py  Hardware orchestrator + dashboard
   portgremlin-cli.py        Interactive serial control
   gremlin-oracle.py         Dual-perspective session monitor
-setup.sh                    Install deps + ./setup.sh --run
+setup.sh                    Interactive setup + run
 ```
 
 ## License

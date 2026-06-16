@@ -13,6 +13,15 @@ typedef enum {
     NUM_DEVICE_TYPES
 } DeviceType;
 
+typedef enum {
+    VIDPID_TYPE_KEYBOARD,
+    VIDPID_TYPE_AUDIO,
+    VIDPID_TYPE_GAMEPAD,
+    VIDPID_TYPE_MIDI,
+    VIDPID_TYPE_PRINTER,
+    VIDPID_TYPE_GENERIC
+} VIDPIDDeviceType;
+
 typedef struct {
     uint16_t ui16VID;
     uint16_t ui16PID;
@@ -58,6 +67,7 @@ typedef struct {
 } tUSBMIDIDevice;
 
 extern DeviceType g_eCurrentDevice;
+extern VIDPIDDeviceType g_eCurrentDeviceType;
 extern void *g_pActiveDevice;
 
 extern tUSBDHIDKeyboardDevice g_sKeyboardDevice;

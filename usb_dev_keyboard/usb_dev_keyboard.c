@@ -31,103 +31,107 @@
 
 static const int8_t g_ppi8KeyUsageCodes[][2] =
 {
-    { 0, HID_KEYB_USAGE_SPACE },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_1 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_FQUOTE },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_3 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_4 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_5 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_7 },
-    { 0, HID_KEYB_USAGE_FQUOTE },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_9 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_0 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_8 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_EQUAL },
-    { 0, HID_KEYB_USAGE_COMMA },
-    { 0, HID_KEYB_USAGE_MINUS },
-    { 0, HID_KEYB_USAGE_PERIOD },
-    { 0, HID_KEYB_USAGE_FSLASH },
-    { 0, HID_KEYB_USAGE_0 },
-    { 0, HID_KEYB_USAGE_1 },
-    { 0, HID_KEYB_USAGE_2 },
-    { 0, HID_KEYB_USAGE_3 },
-    { 0, HID_KEYB_USAGE_4 },
-    { 0, HID_KEYB_USAGE_5 },
-    { 0, HID_KEYB_USAGE_6 },
-    { 0, HID_KEYB_USAGE_7 },
-    { 0, HID_KEYB_USAGE_8 },
-    { 0, HID_KEYB_USAGE_9 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_SEMICOLON },
-    { 0, HID_KEYB_USAGE_SEMICOLON },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_COMMA },
-    { 0, HID_KEYB_USAGE_EQUAL },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_PERIOD },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_FSLASH },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_2 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_A },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_B },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_C },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_D },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_E },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_F },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_G },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_H },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_I },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_J },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_K },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_L },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_M },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_N },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_O },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_P },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Q },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_R },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_S },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_T },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_U },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_V },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_W },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_X },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Y },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Z },
-    { 0, HID_KEYB_USAGE_LBRACKET },
-    { 0, HID_KEYB_USAGE_BSLASH },
-    { 0, HID_KEYB_USAGE_RBRACKET },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_6 },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_MINUS },
-    { 0, HID_KEYB_USAGE_BQUOTE },
-    { 0, HID_KEYB_USAGE_A },
-    { 0, HID_KEYB_USAGE_B },
-    { 0, HID_KEYB_USAGE_C },
-    { 0, HID_KEYB_USAGE_D },
-    { 0, HID_KEYB_USAGE_E },
-    { 0, HID_KEYB_USAGE_F },
-    { 0, HID_KEYB_USAGE_G },
-    { 0, HID_KEYB_USAGE_H },
-    { 0, HID_KEYB_USAGE_I },
-    { 0, HID_KEYB_USAGE_J },
-    { 0, HID_KEYB_USAGE_K },
-    { 0, HID_KEYB_USAGE_L },
-    { 0, HID_KEYB_USAGE_M },
-    { 0, HID_KEYB_USAGE_N },
-    { 0, HID_KEYB_USAGE_O },
-    { 0, HID_KEYB_USAGE_P },
-    { 0, HID_KEYB_USAGE_Q },
-    { 0, HID_KEYB_USAGE_R },
-    { 0, HID_KEYB_USAGE_S },
-    { 0, HID_KEYB_USAGE_T },
-    { 0, HID_KEYB_USAGE_U },
-    { 0, HID_KEYB_USAGE_V },
-    { 0, HID_KEYB_USAGE_W },
-    { 0, HID_KEYB_USAGE_X },
-    { 0, HID_KEYB_USAGE_Y },
-    { 0, HID_KEYB_USAGE_Z },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_LBRACKET },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_BSLASH },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_RBRACKET },
-    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_BQUOTE },
-    { 0, HID_KEYB_USAGE_ENTER },
+    { 0, HID_KEYB_USAGE_SPACE },                       //   0x20
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_1 },         // ! 0x21
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_FQUOTE },    // " 0x22
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_3 },         // # 0x23
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_4 },         // $ 0x24
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_5 },         // % 0x25
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_7 },         // & 0x26
+    { 0, HID_KEYB_USAGE_FQUOTE },                      // ' 0x27
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_9 },         // ( 0x28
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_0 },         // ) 0x29
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_8 },         // * 0x2a
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_EQUAL },     // + 0x2b
+    { 0, HID_KEYB_USAGE_COMMA },                       // , 0x2c
+    { 0, HID_KEYB_USAGE_MINUS },                       // - 0x2d
+    { 0, HID_KEYB_USAGE_PERIOD },                      // . 0x2e
+    { 0, HID_KEYB_USAGE_FSLASH },                      // / 0x2f
+    { 0, HID_KEYB_USAGE_0 },                           // 0 0x30
+    { 0, HID_KEYB_USAGE_1 },                           // 1 0x31
+    { 0, HID_KEYB_USAGE_2 },                           // 2 0x32
+    { 0, HID_KEYB_USAGE_3 },                           // 3 0x33
+    { 0, HID_KEYB_USAGE_4 },                           // 4 0x34
+    { 0, HID_KEYB_USAGE_5 },                           // 5 0x35
+    { 0, HID_KEYB_USAGE_6 },                           // 6 0x36
+    { 0, HID_KEYB_USAGE_7 },                           // 7 0x37
+    { 0, HID_KEYB_USAGE_8 },                           // 8 0x38
+    { 0, HID_KEYB_USAGE_9 },                           // 9 0x39
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_SEMICOLON }, // : 0x3a
+    { 0, HID_KEYB_USAGE_SEMICOLON },                   // ; 0x3b
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_COMMA },     // < 0x3c
+    { 0, HID_KEYB_USAGE_EQUAL },                       // = 0x3d
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_PERIOD },    // > 0x3e
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_FSLASH },    // ? 0x3f
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_2 },         // @ 0x40
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_A },         // A 0x41
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_B },         // B 0x42
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_C },         // C 0x43
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_D },         // D 0x44
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_E },         // E 0x45
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_F },         // F 0x46
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_G },         // G 0x47
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_H },         // H 0x48
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_I },         // I 0x49
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_J },         // J 0x4a
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_K },         // K 0x4b
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_L },         // L 0x4c
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_M },         // M 0x4d
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_N },         // N 0x4e
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_O },         // O 0x4f
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_P },         // P 0x50
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Q },         // Q 0x51
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_R },         // R 0x52
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_S },         // S 0x53
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_T },         // T 0x54
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_U },         // U 0x55
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_V },         // V 0x56
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_W },         // W 0x57
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_X },         // X 0x58
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Y },         // Y 0x59
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_Z },         // Z 0x5a
+    { 0, HID_KEYB_USAGE_LBRACKET },                    // [ 0x5b
+    { 0, HID_KEYB_USAGE_BSLASH },                      // \ 0x5c
+    { 0, HID_KEYB_USAGE_RBRACKET },                    // ] 0x5d
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_6 },         // ^ 0x5e
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_MINUS },     // _ 0x5f
+    { 0, HID_KEYB_USAGE_BQUOTE },                      // ` 0x60
+    { 0, HID_KEYB_USAGE_A },                           // a 0x61
+    { 0, HID_KEYB_USAGE_B },                           // b 0x62
+    { 0, HID_KEYB_USAGE_C },                           // c 0x63
+    { 0, HID_KEYB_USAGE_D },                           // d 0x64
+    { 0, HID_KEYB_USAGE_E },                           // e 0x65
+    { 0, HID_KEYB_USAGE_F },                           // f 0x66
+    { 0, HID_KEYB_USAGE_G },                           // g 0x67
+    { 0, HID_KEYB_USAGE_H },                           // h 0x68
+    { 0, HID_KEYB_USAGE_I },                           // i 0x69
+    { 0, HID_KEYB_USAGE_J },                           // j 0x6a
+    { 0, HID_KEYB_USAGE_K },                           // k 0x6b
+    { 0, HID_KEYB_USAGE_L },                           // l 0x6c
+    { 0, HID_KEYB_USAGE_M },                           // m 0x6d
+    { 0, HID_KEYB_USAGE_N },                           // n 0x6e
+    { 0, HID_KEYB_USAGE_O },                           // o 0x6f
+    { 0, HID_KEYB_USAGE_P },                           // p 0x70
+    { 0, HID_KEYB_USAGE_Q },                           // q 0x71
+    { 0, HID_KEYB_USAGE_R },                           // r 0x72
+    { 0, HID_KEYB_USAGE_S },                           // s 0x73
+    { 0, HID_KEYB_USAGE_T },                           // t 0x74
+    { 0, HID_KEYB_USAGE_U },                           // u 0x75
+    { 0, HID_KEYB_USAGE_V },                           // v 0x76
+    { 0, HID_KEYB_USAGE_W },                           // w 0x77
+    { 0, HID_KEYB_USAGE_X },                           // x 0x78
+    { 0, HID_KEYB_USAGE_Y },                           // y 0x79
+    { 0, HID_KEYB_USAGE_Z },                           // z 0x7a
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_LBRACKET },  // { 0x7b
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_BSLASH },    // | 0x7c
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_RBRACKET },  // } 0x7d
+    { HID_KEYB_LEFT_SHIFT, HID_KEYB_USAGE_BQUOTE },    // ~ 0x7e
+    { 0, HID_KEYB_USAGE_ENTER },                       // LF 0x0A
 };
+
+volatile bool g_bConnected = false;
+volatile bool g_bSuspended = false;
+volatile uint32_t g_ui32SysTickCount;
 
 typedef enum {
     STATE_UNCONFIGURED,
@@ -135,16 +139,14 @@ typedef enum {
     STATE_SENDING
 } DeviceState;
 
-static volatile bool g_bConnected = false;
-static volatile bool g_bSuspended = false;
-static volatile uint32_t g_ui32SysTickCount;
-static volatile DeviceState g_eKeyboardState = STATE_UNCONFIGURED;
-static volatile DeviceState g_eAudioState = STATE_UNCONFIGURED;
-static volatile DeviceState g_eMidiState = STATE_UNCONFIGURED;
-static volatile DeviceState g_eGamepadState = STATE_UNCONFIGURED;
-static volatile DeviceState g_ePrinterState = STATE_UNCONFIGURED;
+volatile DeviceState g_eKeyboardState = STATE_UNCONFIGURED;
+volatile DeviceState g_eAudioState = STATE_UNCONFIGURED;
+volatile DeviceState g_eMidiState = STATE_UNCONFIGURED;
+volatile DeviceState g_eGamepadState = STATE_UNCONFIGURED;
+volatile DeviceState g_ePrinterState = STATE_UNCONFIGURED;
 
 DeviceType g_eCurrentDevice = DEVICE_KEYBOARD;
+VIDPIDDeviceType g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
 void *g_pActiveDevice = NULL;
 
 #ifdef DEBUG
@@ -152,11 +154,6 @@ void __error__(char *pcFilename, uint32_t ui32Line) { }
 #endif
 
 static void SendString(char *pcStr);
-static void CycleDeviceType(void);
-static void ReenumerateWithRandomVIDPID(void);
-static void RandomizeVIDPID(void *pDevice, DeviceType type);
-static void ConfigureUART(void);
-static void USBRemoteWakeup(void);
 static bool WaitForSendIdle(uint_fast32_t ui32TimeoutTicks);
 
 uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event,
@@ -327,18 +324,19 @@ uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event,
 static bool WaitForSendIdle(uint_fast32_t ui32TimeoutTicks)
 {
     uint32_t ui32Start = g_ui32SysTickCount;
-    while (1)
-    {
-        uint32_t ui32Now = g_ui32SysTickCount;
-        uint32_t ui32Elapsed = (ui32Start < ui32Now)
-            ? (ui32Now - ui32Start)
-            : (0xFFFFFFFF - ui32Start + ui32Now + 1);
+    uint32_t ui32Elapsed = 0;
 
+    while (ui32Elapsed < ui32TimeoutTicks)
+    {
         if (g_eKeyboardState == STATE_IDLE)
             return true;
-        if (ui32Elapsed >= ui32TimeoutTicks)
-            return false;
+
+        uint32_t ui32Now = g_ui32SysTickCount;
+        ui32Elapsed = (ui32Start < ui32Now)
+            ? (ui32Now - ui32Start)
+            : (0xFFFFFFFF - ui32Start + ui32Now + 1);
     }
+    return false;
 }
 
 static void SendString(char *pcStr)
@@ -347,7 +345,7 @@ static void SendString(char *pcStr)
     {
         uint32_t ui32Char = (uint32_t)*pcStr++;
 
-        if (ui32Char < ' ' || ui32Char > '~')
+        if ((ui32Char < ' ') || (ui32Char > '~'))
         {
             if (ui32Char != '\n')
                 continue;
@@ -386,7 +384,7 @@ static void SendString(char *pcStr)
     }
 }
 
-static void ConfigureUART(void)
+void ConfigureUART(void)
 {
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
@@ -397,105 +395,241 @@ static void ConfigureUART(void)
     UARTStdioConfig(0, 115200, 16000000);
 }
 
-static void RandomizeVIDPID(void *pDevice, DeviceType type)
+void PrepareDevice(VIDPIDDeviceType type)
 {
     uint16_t vid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
     uint16_t pid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
 
     switch (type)
     {
-        case DEVICE_KEYBOARD:
-            ((tUSBDHIDKeyboardDevice *)pDevice)->ui16VID = vid;
-            ((tUSBDHIDKeyboardDevice *)pDevice)->ui16PID = pid;
+        case VIDPID_TYPE_KEYBOARD:
+        {
+            static uint8_t s_DeviceBuffer[sizeof(tUSBDHIDKeyboardDevice)];
+            memcpy(s_DeviceBuffer, &g_sKeyboardTemplate, sizeof(g_sKeyboardTemplate));
+            uint16_t *pVID = (uint16_t *)(s_DeviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16VID));
+            uint16_t *pPID = (uint16_t *)(s_DeviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16PID));
+            *pVID = vid;
+            *pPID = pid;
+            USBDHIDKeyboardInit(0, (tUSBDHIDKeyboardDevice *)s_DeviceBuffer);
             break;
-        case DEVICE_AUDIO:
-            ((tUSBAudioDevice *)pDevice)->ui16VID = vid;
-            ((tUSBAudioDevice *)pDevice)->ui16PID = pid;
+        }
+
+        case VIDPID_TYPE_AUDIO:
+        {
+            static tUSBAudioDevice s_AudioDevice;
+            s_AudioDevice = g_sAudioTemplate;
+            s_AudioDevice.ui16VID = vid;
+            s_AudioDevice.ui16PID = pid;
+            USBAudioInit(0, &s_AudioDevice);
             break;
-        case DEVICE_GAMEPAD:
-            ((tUSBDHIDGamepadDevice *)pDevice)->ui16VID = vid;
-            ((tUSBDHIDGamepadDevice *)pDevice)->ui16PID = pid;
+        }
+
+        case VIDPID_TYPE_MIDI:
+        {
+            static tUSBMIDIDevice s_MIDIDevice;
+            s_MIDIDevice = g_sMIDITemplate;
+            s_MIDIDevice.ui16VID = vid;
+            s_MIDIDevice.ui16PID = pid;
+            USBMIDIInit(0, &s_MIDIDevice);
             break;
-        case DEVICE_MIDI:
-            ((tUSBMIDIDevice *)pDevice)->ui16VID = vid;
-            ((tUSBMIDIDevice *)pDevice)->ui16PID = pid;
+        }
+
+        case VIDPID_TYPE_PRINTER:
+        {
+            static tUSBPrinterDevice s_PrinterDevice;
+            s_PrinterDevice = g_sPrinterTemplate;
+            s_PrinterDevice.ui16VID = vid;
+            s_PrinterDevice.ui16PID = pid;
+            USBPrinterInit(0, &s_PrinterDevice);
             break;
-        case DEVICE_PRINTER:
-            ((tUSBPrinterDevice *)pDevice)->ui16VID = vid;
-            ((tUSBPrinterDevice *)pDevice)->ui16PID = pid;
-            break;
+        }
+
         default:
+            UARTprintf("Unknown device type in PrepareDevice.\n");
             break;
     }
 }
 
-static void USBRemoteWakeup(void)
+void RandomizeVIDPID(void *pDevice, VIDPIDDeviceType type)
+{
+    uint16_t vid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
+    uint16_t pid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
+
+    switch (type)
+    {
+        case VIDPID_TYPE_KEYBOARD:
+        {
+            tUSBDHIDKeyboardDevice *pKb = (tUSBDHIDKeyboardDevice *)pDevice;
+            pKb->ui16VID = vid;
+            pKb->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_AUDIO:
+        {
+            tUSBAudioDevice *pAudio = (tUSBAudioDevice *)pDevice;
+            pAudio->ui16VID = vid;
+            pAudio->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_MIDI:
+        {
+            tUSBMIDIDevice *pMIDI = (tUSBMIDIDevice *)pDevice;
+            pMIDI->ui16VID = vid;
+            pMIDI->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_PRINTER:
+        {
+            tUSBPrinterDevice *pPrinter = (tUSBPrinterDevice *)pDevice;
+            pPrinter->ui16VID = vid;
+            pPrinter->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_GAMEPAD:
+        {
+            tUSBDHIDGamepadDevice *pPad = (tUSBDHIDGamepadDevice *)pDevice;
+            pPad->ui16VID = vid;
+            pPad->ui16PID = pid;
+            break;
+        }
+
+        case VIDPID_TYPE_GENERIC:
+            break;
+
+        default:
+            UARTprintf("Unknown device type in RandomizeVIDPID.\n");
+            break;
+    }
+}
+
+void USBAudioDeviceInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
+{
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice, pDevice);
+}
+
+void USBPrinterDeviceInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice)
+{
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice, pDevice);
+}
+
+void USBMIDIDeviceInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice)
+{
+    USBDCDInit(ui32Index, (tDeviceInfo *)pDevice, pDevice);
+}
+
+void USBAudioInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
+{
+    USBAudioDeviceInit(ui32Index, pDevice);
+}
+
+void USBDHIDGamepadInit(uint32_t ui32Index, tUSBDHIDGamepadDevice *pDevice)
+{
+    USBDHIDInit(ui32Index, (tUSBDHIDDevice *)pDevice);
+}
+
+void USBPrinterInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice)
+{
+    USBPrinterDeviceInit(ui32Index, pDevice);
+}
+
+void USBMIDIInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice)
+{
+    USBMIDIDeviceInit(ui32Index, pDevice);
+}
+
+void USBRemoteWakeup(void)
 {
     if (g_bSuspended)
     {
         USBDCDRemoteWakeupRequest(0);
-        UARTprintf("Sent remote wake-up signal\n\r");
+        UARTprintf("Sent USB remote wake-up signal\n\r");
     }
 }
 
-static void ReenumerateWithRandomVIDPID(void)
+void USBDeviceRemoteWakeupRequest(void *pDevice)
+{
+    (void)pDevice;
+    USBRemoteWakeup();
+}
+
+void USBGamepadRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+void USBAudioRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+void USBMIDIRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+void USBPrinterRemoteWakeupRequest(void *pDevice)
+{
+    USBDeviceRemoteWakeupRequest(pDevice);
+}
+
+void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
 {
     UARTprintf("Re-enumerating USB with new VID/PID...\n\r");
 
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
 
-    switch (g_eCurrentDevice)
+    switch (deviceType)
     {
-        case DEVICE_KEYBOARD:
+        case VIDPID_TYPE_KEYBOARD:
             USBDHIDKeyboardTerm(&g_sKeyboardDevice);
-            RandomizeVIDPID(&g_sKeyboardDevice, DEVICE_KEYBOARD);
+            RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sKeyboardDevice.ui16VID, g_sKeyboardDevice.ui16PID);
             USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
             break;
 
-        case DEVICE_AUDIO:
-            RandomizeVIDPID(&g_sAudioDevice, DEVICE_AUDIO);
+        case VIDPID_TYPE_AUDIO:
+            RandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sAudioDevice.ui16VID, g_sAudioDevice.ui16PID);
-            g_sAudioDevice.pfnHandler = AudioHandler;
-            g_sAudioDevice.pvCBData = (void *)&g_sAudioDevice;
-            USBDCDInit(0, (tDeviceInfo *)&g_sAudioDevice, &g_sAudioDevice);
+            USBAudioInit(0, &g_sAudioDevice);
             break;
 
-        case DEVICE_GAMEPAD:
-            RandomizeVIDPID(&g_sGamepadDevice, DEVICE_GAMEPAD);
+        case VIDPID_TYPE_GAMEPAD:
+            RandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sGamepadDevice.ui16VID, g_sGamepadDevice.ui16PID);
-            g_sGamepadDevice.pfnHandler = GamepadHandler;
-            g_sGamepadDevice.pvCBData = (void *)&g_sGamepadDevice;
-            USBDHIDInit(0, (tUSBDHIDDevice *)&g_sGamepadDevice);
+            USBDHIDGamepadInit(0, &g_sGamepadDevice);
             break;
 
-        case DEVICE_MIDI:
-            RandomizeVIDPID(&g_sMIDIDevice, DEVICE_MIDI);
+        case VIDPID_TYPE_MIDI:
+            RandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sMIDIDevice.ui16VID, g_sMIDIDevice.ui16PID);
-            g_sMIDIDevice.pfnHandler = MIDIHandler;
-            g_sMIDIDevice.pvCBData = (void *)&g_sMIDIDevice;
-            USBDCDInit(0, (tDeviceInfo *)&g_sMIDIDevice, &g_sMIDIDevice);
+            USBMIDIInit(0, &g_sMIDIDevice);
             break;
 
-        case DEVICE_PRINTER:
-            RandomizeVIDPID(&g_sPrinterDevice, DEVICE_PRINTER);
+        case VIDPID_TYPE_PRINTER:
+            RandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sPrinterDevice.ui16VID, g_sPrinterDevice.ui16PID);
-            g_sPrinterDevice.pfnHandler = PrinterHandler;
-            g_sPrinterDevice.pvCBData = (void *)&g_sPrinterDevice;
-            USBDCDInit(0, (tDeviceInfo *)&g_sPrinterDevice, &g_sPrinterDevice);
+            USBPrinterInit(0, &g_sPrinterDevice);
+            break;
+
+        default:
+            UARTprintf("Unknown device type for re-enumeration.\n\r");
             break;
     }
 
     USBDevConnect(USB0_BASE);
 }
 
-static void CycleDeviceType(void)
+void CycleDeviceType(void)
 {
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
@@ -509,7 +643,8 @@ static void CycleDeviceType(void)
             UARTprintf("Switching to Keyboard...\n");
             g_sKeyboardDevice = g_sKeyboardTemplate;
             g_pActiveDevice = &g_sKeyboardDevice;
-            RandomizeVIDPID(&g_sKeyboardDevice, DEVICE_KEYBOARD);
+            RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
+            g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
             USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
             break;
 
@@ -517,39 +652,43 @@ static void CycleDeviceType(void)
             UARTprintf("Switching to Audio...\n");
             g_sAudioDevice = g_sAudioTemplate;
             g_pActiveDevice = &g_sAudioDevice;
-            RandomizeVIDPID(&g_sAudioDevice, DEVICE_AUDIO);
-            USBDCDInit(0, (tDeviceInfo *)&g_sAudioDevice, &g_sAudioDevice);
+            RandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
+            g_eCurrentDeviceType = VIDPID_TYPE_AUDIO;
+            USBAudioInit(0, &g_sAudioDevice);
             break;
 
         case DEVICE_PRINTER:
             UARTprintf("Switching to Printer...\n");
             g_sPrinterDevice = g_sPrinterTemplate;
             g_pActiveDevice = &g_sPrinterDevice;
-            RandomizeVIDPID(&g_sPrinterDevice, DEVICE_PRINTER);
-            USBDCDInit(0, (tDeviceInfo *)&g_sPrinterDevice, &g_sPrinterDevice);
+            RandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
+            g_eCurrentDeviceType = VIDPID_TYPE_PRINTER;
+            USBPrinterInit(0, &g_sPrinterDevice);
             break;
 
         case DEVICE_MIDI:
             UARTprintf("Switching to MIDI...\n");
             g_sMIDIDevice = g_sMIDITemplate;
             g_pActiveDevice = &g_sMIDIDevice;
-            RandomizeVIDPID(&g_sMIDIDevice, DEVICE_MIDI);
-            USBDCDInit(0, (tDeviceInfo *)&g_sMIDIDevice, &g_sMIDIDevice);
+            RandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
+            g_eCurrentDeviceType = VIDPID_TYPE_MIDI;
+            USBMIDIInit(0, &g_sMIDIDevice);
             break;
 
         case DEVICE_GAMEPAD:
             UARTprintf("Switching to Gamepad...\n");
             g_sGamepadDevice = g_sGamepadTemplate;
             g_pActiveDevice = &g_sGamepadDevice;
-            RandomizeVIDPID(&g_sGamepadDevice, DEVICE_GAMEPAD);
-            USBDHIDInit(0, (tUSBDHIDDevice *)&g_sGamepadDevice);
+            RandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
+            g_eCurrentDeviceType = VIDPID_TYPE_GAMEPAD;
+            USBDHIDGamepadInit(0, &g_sGamepadDevice);
             break;
     }
 
     USBDevConnect(USB0_BASE);
 }
 
-void SysTick_Handler(void)
+void SysTickIntHandler(void)
 {
     static uint32_t tickCounter = 0;
     g_ui32SysTickCount++;
@@ -558,19 +697,30 @@ void SysTick_Handler(void)
     if (tickCounter >= 5)
     {
         tickCounter = 0;
-        ReenumerateWithRandomVIDPID();
+
+        switch (g_eCurrentDevice)
+        {
+            case DEVICE_KEYBOARD:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_KEYBOARD);
+                break;
+            case DEVICE_AUDIO:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_AUDIO);
+                break;
+            case DEVICE_GAMEPAD:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_GAMEPAD);
+                break;
+            case DEVICE_MIDI:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_MIDI);
+                break;
+            case DEVICE_PRINTER:
+                ReenumerateWithRandomVIDPID(VIDPID_TYPE_PRINTER);
+                break;
+            default:
+                break;
+        }
+
         g_eCurrentDevice = (DeviceType)(((int)g_eCurrentDevice + 1) % (int)NUM_DEVICE_TYPES);
     }
-}
-
-void UART0_Handler(void)
-{
-    UARTStdioIntHandler();
-}
-
-void USB0_Handler(void)
-{
-    USB0DeviceIntHandler();
 }
 
 int main(void)
@@ -605,9 +755,11 @@ int main(void)
     USBStackModeSet(0, eUSBModeForceDevice, 0);
 
     g_sKeyboardDevice = g_sKeyboardTemplate;
+    g_sKeyboardDevice.sPrivateData.sHIDDevice.ppui8StringDescriptors = g_ppui8StringDescriptorsKeyboard;
     g_eCurrentDevice = DEVICE_KEYBOARD;
+    g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
     g_pActiveDevice = &g_sKeyboardDevice;
-    RandomizeVIDPID(&g_sKeyboardDevice, DEVICE_KEYBOARD);
+    RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
     SetSerialNumberString((uint32_t)(rand() ^ (rand() << 16)));
     USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
 
@@ -645,28 +797,30 @@ int main(void)
             {
                 if (g_bSuspended)
                 {
-                    switch (g_eCurrentDevice)
+                    switch (g_eCurrentDeviceType)
                     {
-                        case DEVICE_KEYBOARD:
+                        case VIDPID_TYPE_KEYBOARD:
                             USBDHIDKeyboardRemoteWakeupRequest(&g_sKeyboardDevice);
                             break;
-                        case DEVICE_AUDIO:
-                            USBRemoteWakeup();
+                        case VIDPID_TYPE_AUDIO:
+                            USBAudioRemoteWakeupRequest(&g_sAudioDevice);
                             break;
-                        case DEVICE_GAMEPAD:
-                            USBRemoteWakeup();
+                        case VIDPID_TYPE_GAMEPAD:
+                            USBGamepadRemoteWakeupRequest(&g_sGamepadDevice);
                             break;
-                        case DEVICE_MIDI:
-                            USBRemoteWakeup();
+                        case VIDPID_TYPE_MIDI:
+                            USBMIDIRemoteWakeupRequest(&g_sMIDIDevice);
                             break;
-                        case DEVICE_PRINTER:
-                            USBRemoteWakeup();
+                        case VIDPID_TYPE_PRINTER:
+                            USBPrinterRemoteWakeupRequest(&g_sPrinterDevice);
+                            break;
+                        default:
                             break;
                     }
                 }
                 else
                 {
-                    SendString("PortGremlin: cycling device descriptors.\n");
+                    SendString("You have pressed the SW1 button... Cycling Device Descriptors. \nTry pressing the SW2 button.\n\n");
                     CycleDeviceType();
                 }
             }
@@ -675,7 +829,9 @@ int main(void)
                 if (g_bSuspended)
                     USBDHIDKeyboardRemoteWakeupRequest((void *)&g_sKeyboardDevice);
                 else
-                    SendString("PortGremlin active. Press SW1 to cycle.\n");
+                    SendString("You have pressed the SW2 button.\n"
+                               "Try pressing the Caps Lock key on your "
+                               "keyboard and then press either button.\n\n");
             }
 
             while (g_ui32SysTickCount == ui32LastTickCount) { }

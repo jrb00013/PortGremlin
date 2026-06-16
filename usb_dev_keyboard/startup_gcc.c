@@ -3,9 +3,9 @@
 extern uint32_t __stack_top;
 
 extern int main(void);
-extern void SysTick_Handler(void);
-extern void UART0_Handler(void);
-extern void USB0_Handler(void);
+extern void SysTickIntHandler(void);
+extern void UARTStdioIntHandler(void);
+extern void USB0DeviceIntHandler(void);
 
 __attribute__((used))
 void Default_Handler(void)
@@ -24,7 +24,7 @@ void WEAK_DEFAULT UsageFault_Handler(void);
 void WEAK_DEFAULT SVC_Handler(void);
 void WEAK_DEFAULT DebugMon_Handler(void);
 void WEAK_DEFAULT PendSV_Handler(void);
-void WEAK_DEFAULT SysTick_Handler(void);
+void WEAK_DEFAULT SysTickIntHandler(void);
 
 __attribute__((section(".vectors")))
 void (* const g_pfnVectorTable[])(void) =
@@ -41,19 +41,13 @@ void (* const g_pfnVectorTable[])(void) =
     DebugMon_Handler,
     0,
     PendSV_Handler,
-    SysTick_Handler,
+    SysTickIntHandler,
     Default_Handler,
     Default_Handler,
     Default_Handler,
     Default_Handler,
     Default_Handler,
-    UART0_Handler,
-    Default_Handler,
-    Default_Handler,
-    Default_Handler,
-    Default_Handler,
-    Default_Handler,
-    Default_Handler,
+    UARTStdioIntHandler,
     Default_Handler,
     Default_Handler,
     Default_Handler,
@@ -92,7 +86,13 @@ void (* const g_pfnVectorTable[])(void) =
     Default_Handler,
     Default_Handler,
     Default_Handler,
-    USB0_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    Default_Handler,
+    USB0DeviceIntHandler,
     Default_Handler,
     Default_Handler,
     Default_Handler,

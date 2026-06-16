@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PortGremlin setup — install dependencies and optionally run Nexus.
+# PortGremlin setup — install dependencies and optionally run Overwatch.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -54,7 +54,7 @@ install_flash_tools() {
     if have lm4flash; then
         ok "lm4flash found"
     elif have openocd; then
-        ok "openocd found (use: make -C usb_dev_keyboard flash with openocd config)"
+        ok "openocd found"
     else
         warn "No flash tool (lm4flash/openocd). Build only — flash manually."
     fi
@@ -77,7 +77,8 @@ build_firmware() {
     fi
     if [[ ! -d "${TIVAWARE_PATH}" ]]; then
         warn "Skipping firmware build — TivaWare not at ${TIVAWARE_PATH}"
-        warn "Download TivaWare 2.2.0.295 and: export TIVAWARE_PATH=/path/to/TivaWare_C_Series-2.2.0.295"
+        warn "Set TIVAWARE_PATH to your TivaWare install, e.g.:"
+        warn "  export TIVAWARE_PATH=/opt/ti/TivaWare_C_Series-2.2.0.295"
         return 0
     fi
     info "Building firmware..."
@@ -87,10 +88,10 @@ build_firmware() {
 
 setup_groups() {
     if have lsusb && ! groups | grep -q '\bplugdev\b'; then
-        warn "Add yourself to plugdev for USB access: sudo usermod -aG plugdev \$USER"
+        warn "Add yourself to plugdev: sudo usermod -aG plugdev \$USER"
     fi
-    if [[ -c /dev/ttyACM0 ]] 2>/dev/null && ! groups | grep -q '\bdialout\b'; then
-        warn "Add yourself to dialout for serial: sudo usermod -aG dialout \$USER"
+    if [[ -e /dev/ttyACM0 ]] 2>/dev/null && ! groups | grep -q '\bdialout\b'; then
+        warn "Add yourself to dialout: sudo usermod -aG dialout \$USER"
     fi
 }
 
@@ -102,22 +103,22 @@ print_banner() {
     echo -e "${RED}  ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██║   ██║██╔══██╗██╔══╝  ██║╚██╔╝██║██║██║╚██╗██║${NC}"
     echo -e "${RED}  ██║     ╚██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║███████╗██║ ╚═╝ ██║██║██║ ╚████║${NC}"
     echo -e "${RED}  ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝${NC}"
-    echo -e "${CYAN}  NEXUS — Closed-Loop USB Enumeration Attack Platform${NC}"
+    echo -e "${CYAN}  USB Enumeration Security Research Platform${NC}"
     echo ""
 }
 
-run_nexus() {
-  if [[ ! -d "${VENV}" ]]; then
+run_overwatch() {
+    if [[ ! -d "${VENV}" ]]; then
         fail "Virtualenv not found. Run ./setup.sh first."
     fi
     # shellcheck disable=SC1091
     source "${VENV}/bin/activate"
     print_banner
-    info "Launching Gremlin Nexus..."
+    info "Launching PortGremlin Overwatch..."
     info "Dashboard: http://127.0.0.1:8765"
-    info "Connect LaunchPad: Device USB -> host, ICDI serial -> this machine"
+    info "Connect LaunchPad: Device USB -> target host, ICDI serial -> this machine"
     echo ""
-    exec python3 "${ROOT}/tools/nexus.py" "$@"
+    exec python3 "${ROOT}/tools/portgremlin-overwatch.py" "$@"
 }
 
 do_setup() {
@@ -143,11 +144,11 @@ main() {
     cd "${ROOT}"
     if [[ "${1:-}" == "--run" ]]; then
         shift
-        run_nexus "$@"
+        run_overwatch "$@"
     elif [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
         echo "Usage:"
         echo "  ./setup.sh          Install all dependencies"
-        echo "  ./setup.sh --run    Launch Gremlin Nexus (dashboard + orchestrator)"
+        echo "  ./setup.sh --run    Launch Overwatch (dashboard + orchestrator)"
         echo ""
         echo "Environment:"
         echo "  TIVAWARE_PATH  Path to TivaWare (default: /opt/ti/TivaWare_C_Series-2.2.0.295)"

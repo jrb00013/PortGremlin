@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Gremlin Nexus — closed-loop USB red team orchestrator.
+PortGremlin Overwatch — closed-loop host-side orchestrator.
 
-Reads @PG{...} JSON telemetry from the LaunchPad, monitors host kernel USB
-errors (dmesg/journalctl), correlates both perspectives, and autonomously
-drives escalation when the host shows pain signals.
+Reads @PG{...} JSON telemetry from the LaunchPad, monitors kernel USB errors
+(dmesg/journalctl), correlates both perspectives, and autonomously drives
+escalation when the host shows pain signals.
 
-Includes a live web dashboard at http://127.0.0.1:8765
+Live dashboard: http://127.0.0.1:8765
 """
 
 from __future__ import annotations
@@ -40,17 +40,17 @@ USB_ERROR_RE = re.compile(
 )
 
 ESCALATION_LADDER = [
-  ("[", "RedTeam choreography"),
-  ("b", "Gremlin Brain"),
-  ("p", "next persona"),
-  ("g", "genetic evolution"),
-  ("d", "driver confusion"),
-  ("m", "malformed mode"),
+    ("[", "RedTeam choreography"),
+    ("b", "Gremlin Brain"),
+    ("p", "next persona"),
+    ("g", "genetic evolution"),
+    ("d", "driver confusion"),
+    ("m", "malformed mode"),
 ]
 
 
 @dataclass
-class NexusState:
+class OverwatchState:
     host_os: str = "unknown"
     persona: str = "unknown"
     brain_phase: str = "idle"
@@ -91,7 +91,7 @@ class NexusState:
         }
 
 
-STATE = NexusState()
+STATE = OverwatchState()
 STATE_LOCK = threading.Lock()
 
 
@@ -170,7 +170,7 @@ def maybe_autonomous_escalate(ser: Optional[serial.Serial], payload: dict[str, A
 
     ser.write(cmd.encode("ascii"))
     ser.flush()
-    log_event("nexus", f"AUTO-CMD '{cmd}' ({reason})")
+    log_event("auto", f"CMD '{cmd}' ({reason})")
 
 
 def serial_loop(port: str, baud: int, stop: threading.Event) -> None:
@@ -178,13 +178,13 @@ def serial_loop(port: str, baud: int, stop: threading.Event) -> None:
     time.sleep(0.4)
     ser.write(b"x")
     ser.flush()
-    log_event("nexus", f"Connected {port} @ {baud}, sent nexus engage (x)")
+    log_event("host", f"Serial {port} @ {baud}, sent overdrive engage (x)")
 
     while not stop.is_set():
         try:
             raw = ser.readline()
         except serial.SerialException as exc:
-            log_event("nexus", f"Serial error: {exc}")
+            log_event("host", f"Serial error: {exc}")
             break
         if raw:
             line = raw.decode("utf-8", errors="replace").rstrip("\r\n")
@@ -214,22 +214,23 @@ def dmesg_loop(stop: threading.Event) -> None:
 
 
 def journal_loop(stop: threading.Event) -> None:
-    if shutil_which("journalctl"):
-        proc = subprocess.Popen(
-            ["journalctl", "-kf", "-n", "0", "--grep=usb"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            text=True,
-        )
-        while not stop.is_set() and proc.stdout:
-            line = proc.stdout.readline()
-            if not line:
-                break
-            if USB_ERROR_RE.search(line):
-                with STATE_LOCK:
-                    STATE.host_errors += 1
-                    STATE.pain_score += 0.5
-                log_event("journal", line.strip()[:120])
+    if not shutil_which("journalctl"):
+        return
+    proc = subprocess.Popen(
+        ["journalctl", "-kf", "-n", "0", "--grep=usb"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    while not stop.is_set() and proc.stdout:
+        line = proc.stdout.readline()
+        if not line:
+            break
+        if USB_ERROR_RE.search(line):
+            with STATE_LOCK:
+                STATE.host_errors += 1
+                STATE.pain_score += 0.5
+            log_event("journal", line.strip()[:120])
 
 
 def lsusb_loop(interval: float, stop: threading.Event) -> None:
@@ -255,7 +256,7 @@ def shutil_which(cmd: str) -> Optional[str]:
 
 DASHBOARD_HTML = """<!DOCTYPE html>
 <html><head>
-<meta charset="utf-8"><title>Gremlin Nexus</title>
+<meta charset="utf-8"><title>PortGremlin Overwatch</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:#0a0a0f;color:#e0e0e0;font-family:ui-monospace,monospace;padding:20px}
@@ -272,7 +273,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   .ev .src{color:#ff8844;margin-right:8px}
   .ev .ts{color:#555;margin-right:8px}
 </style></head><body>
-<h1>⚡ Gremlin Nexus</h1>
+<h1>PortGremlin Overwatch</h1>
 <p class="sub">Closed-loop USB enumeration attack — live dual-perspective</p>
 <div class="grid" id="metrics"></div>
 <div class="events"><h3>Event Stream</h3><div id="log"></div></div>
@@ -298,7 +299,7 @@ setInterval(tick,1000);tick();
 </script></body></html>"""
 
 
-class NexusHandler(BaseHTTPRequestHandler):
+class OverwatchHandler(BaseHTTPRequestHandler):
     def log_message(self, *_args: Any) -> None:
         pass
 
@@ -320,9 +321,9 @@ class NexusHandler(BaseHTTPRequestHandler):
 
 
 def serve_dashboard(port: int, stop: threading.Event) -> None:
-    server = ThreadingHTTPServer(("127.0.0.1", port), NexusHandler)
+    server = ThreadingHTTPServer(("127.0.0.1", port), OverwatchHandler)
     server.timeout = 1
-    log_event("nexus", f"Dashboard http://127.0.0.1:{port}")
+    log_event("host", f"Dashboard http://127.0.0.1:{port}")
     while not stop.is_set():
         server.handle_request()
     server.server_close()
@@ -335,18 +336,18 @@ def write_report(path: str) -> None:
     data["generated_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
-    log_event("nexus", f"Report written to {path}")
+    log_event("host", f"Report written to {path}")
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Gremlin Nexus orchestrator")
+    parser = argparse.ArgumentParser(description="PortGremlin Overwatch orchestrator")
     parser.add_argument("-p", "--port", help="Serial port")
     parser.add_argument("-b", "--baud", type=int, default=115200)
     parser.add_argument("--web-port", type=int, default=8765)
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument("--no-auto", action="store_true", help="Disable autonomous commands")
     parser.add_argument("--duration", type=float, default=0)
-    parser.add_argument("--report", default="reports/nexus-session.json")
+    parser.add_argument("--report", default="reports/overwatch-session.json")
     args = parser.parse_args()
 
     serial_port = find_serial_port(args.port)
@@ -373,7 +374,7 @@ def main() -> int:
     if not args.no_browser:
         threading.Timer(1.5, lambda: webbrowser.open(f"http://127.0.0.1:{args.web_port}")).start()
 
-    print("\n  Gremlin Nexus running. Ctrl+C to stop.\n")
+    print("\n  PortGremlin Overwatch running. Ctrl+C to stop.\n")
     try:
         if args.duration > 0:
             time.sleep(args.duration)

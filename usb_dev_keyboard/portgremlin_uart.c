@@ -35,9 +35,9 @@ void PortGremlinUARTPrintHelp(void)
     UARTprintf("  v  - print mimic vault\n\r");
     UARTprintf("  0-9- deploy mimic profile N\n\r");
     UARTprintf("  [  - choreo RedTeam  ]  - Stealth  \\  - Blitz\n\r");
-    UARTprintf("--- NEXUS ---\n\r");
+    UARTprintf("--- Overdrive ---\n\r");
     UARTprintf("  g  - genetic evolution engine\n\r");
-    UARTprintf("  x  - full nexus mode (brain+telemetry+evolve)\n\r");
+    UARTprintf("  x  - overdrive (brain+evolve+choreo+telemetry)\n\r");
     UARTprintf("  l  - toggle JSON telemetry stream\n\r");
     UARTprintf("=====================================\n\r");
 }
@@ -56,6 +56,12 @@ void PortGremlinUARTPrintStatus(void)
     UARTprintf("Enums:       %u  Cycles: %u\n\r",
                g_sConfig.ui32EnumCount, g_sConfig.ui32CycleCount);
     UARTprintf("Persona:     %s\n\r", PortGremlinPersonaName(g_ePersona));
+    UARTprintf("Telemetry:   "); PrintOnOff(g_bTelemetryEnabled);
+    UARTprintf("Evolution:   "); PrintOnOff(g_bEvolveActive);
+    if (g_bEvolveActive)
+    {
+        UARTprintf("  gen=%u fit=%u\n\r", g_ui32EvolveGeneration, g_sGenome.ui32Fitness);
+    }
     UARTprintf("Classes:     ");
     for (int i = 0; i < (int)NUM_DEVICE_TYPES; i++)
     {
@@ -242,7 +248,7 @@ void PortGremlinUARTPoll(void)
                     PortGremlinEvolveToggle();
                 }
                 PortGremlinChoreoStart(0);
-                UARTprintf("[NEXUS] Full autonomous nexus mode engaged\n\r");
+                UARTprintf("[OVERDRIVE] Full autonomous stack engaged\n\r");
                 break;
 
             case 'l':

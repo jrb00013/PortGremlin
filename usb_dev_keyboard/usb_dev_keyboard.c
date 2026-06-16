@@ -719,7 +719,7 @@ int main(void)
     PortGremlinTelemetryInit();
     PortGremlinEvolveInit();
     UsbKeybStructsInit();
-    UARTprintf("PortGremlin NEXUS - Closed-Loop USB Attack Platform\n\r");
+    UARTprintf("PortGremlin - Closed-Loop USB Enumeration Attack Platform\n\r");
     PortGremlinUARTPrintHelp();
 
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);

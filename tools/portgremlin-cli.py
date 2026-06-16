@@ -41,8 +41,10 @@ COMMANDS = {
     "vault": "v",
     "choreo-red": "[",
     "choreo-stealth": "]",
-    "choreo-blitz": "\\",
-}
+    "overdrive": "x",
+    "evolve": "g",
+    "telemetry": "l",
+    "overwatch": "o",
 
 VID_RE = re.compile(r"VID:\s*0x([0-9A-Fa-f]{4}),\s*PID:\s*0x([0-9A-Fa-f]{4})")
 SWITCH_RE = re.compile(r"Switching to (\w+)")

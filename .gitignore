@@ -1,4 +1,4 @@
-# Ignore build outputs
+# Build outputs
 **/Debug/
 **/*.out
 **/*.bin
@@ -6,13 +6,14 @@
 **/*.obj
 **/*.o
 **/*.d
+**/*.elf
 
-# Ignore IDE/temporary files
+# IDE/temporary files
 **/*.ccxml
 **/*.ini*
 RemoteSystemsTempFiles/
 
-# Python junk
+# Python
 __pycache__/
 *.pyc
 
@@ -20,10 +21,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# IDE metadata folders
+# IDE metadata
 .metadata/
 .jxbrowser.userdata/
-
-# Ignore metadata and user data folders inside FinalProject
-FinalProject/.metadata/
-FinalProject/.jxbrowser.userdata/

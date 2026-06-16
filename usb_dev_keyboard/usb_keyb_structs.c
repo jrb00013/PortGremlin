@@ -1,27 +1,3 @@
-//*****************************************************************************
-//
-// usb_keyb_structs.c
-//
-// Copyright (c) 2008-2020 Texas Instruments Incorporated.  All rights reserved.
-// Software License Agreement
-// 
-// Texas Instruments (TI) is supplying this software for use solely and
-// exclusively on TI's microcontroller products. The software is owned by
-// TI and/or its suppliers, and is protected under applicable copyright
-// laws. You may not combine this software with "viral" open-source
-// software in order to form a larger program.
-// 
-// THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
-// NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
-// NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
-// CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
-// DAMAGES, FOR ANY REASON WHATSOEVER.
-// 
-// This is part of revision 2.2.0.295 of the EK-TM4C123GXL Firmware Package.
-//
-//*****************************************************************************
-
 #include <stdint.h>
 #include <stdbool.h>
 #include "inc/hw_types.h"
@@ -34,48 +10,22 @@
 #include "usblib/device/usbdhidkeyb.h"
 #include "usb_keyb_structs.h"
 
-//#define USB_PID_AUDIO    0x0201
-#define USB_PID_PRINTER  0x0202
-#define USB_PID_MIDI     0x0203
-
-extern uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-extern uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-extern uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-extern uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-extern uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event, uint32_t ui32MsgParam, void *pvMsgData);
-
-//****************************************************************************
-//
-// The languages supported by this device.
-//
-//****************************************************************************
-const uint8_t g_pui8LangDescriptor[] =
+static const uint8_t g_pui8LangDescriptor[] =
 {
     4,
     USB_DTYPE_STRING,
     USBShort(USB_LANG_EN_US)
 };
 
-//****************************************************************************
-//
-// The manufacturer string.
-//
-//****************************************************************************
-const uint8_t g_pui8ManufacturerString[] =
+static const uint8_t g_pui8ManufacturerString[] =
 {
     (17 + 1) * 2,
     USB_DTYPE_STRING,
-    'T', 0, 'e', 0, 'x', 0, 'a', 0, 's', 0, ' ', 0, 'I', 0, 'n', 0, 's', 0,
-    't', 0, 'r', 0, 'u', 0, 'm', 0, 'e', 0, 'n', 0, 't', 0, 's', 0,
+    'P', 0, 'o', 0, 'r', 0, 't', 0, 'G', 0, 'r', 0, 'e', 0, 'm', 0,
+    'l', 0, 'i', 0, 'n', 0, ' ', 0, 'C', 0, 'o', 0, 'r', 0, 'p', 0
 };
 
-//****************************************************************************
-//
-// The product string.
-//
-//****************************************************************************
-// Keyboard product string
-const uint8_t g_pui8ProductStringKeyboard[] =
+static const uint8_t g_pui8ProductStringKeyboard[] =
 {
     (16 + 1) * 2,
     USB_DTYPE_STRING,
@@ -83,8 +33,7 @@ const uint8_t g_pui8ProductStringKeyboard[] =
     'D', 0, 'e', 0, 'v', 0, 'i', 0, 'c', 0, 'e', 0
 };
 
-// Audio product string
-const uint8_t g_pui8ProductStringAudio[] =
+static const uint8_t g_pui8ProductStringAudio[] =
 {
     (12 + 1) * 2,
     USB_DTYPE_STRING,
@@ -92,8 +41,7 @@ const uint8_t g_pui8ProductStringAudio[] =
     'i', 0, 'c', 0, 'e', 0
 };
 
-// Gamepad product string
-const uint8_t g_pui8ProductStringGamepad[] =
+static const uint8_t g_pui8ProductStringGamepad[] =
 {
     (12 + 1) * 2,
     USB_DTYPE_STRING,
@@ -101,8 +49,7 @@ const uint8_t g_pui8ProductStringGamepad[] =
     'e', 0, 'v', 0, 'i', 0, 'c', 0, 'e', 0
 };
 
-// Printer product string
-const uint8_t g_pui8ProductStringPrinter[] =
+static const uint8_t g_pui8ProductStringPrinter[] =
 {
     (13 + 1) * 2,
     USB_DTYPE_STRING,
@@ -110,8 +57,7 @@ const uint8_t g_pui8ProductStringPrinter[] =
     'e', 0, 'v', 0, 'i', 0, 'c', 0, 'e', 0
 };
 
-// MIDI product string
-const uint8_t g_pui8ProductStringMIDI[] =
+static const uint8_t g_pui8ProductStringMIDI[] =
 {
     (14 + 1) * 2,
     USB_DTYPE_STRING,
@@ -119,26 +65,14 @@ const uint8_t g_pui8ProductStringMIDI[] =
     'r', 0, 'o', 0, 'l', 0, 'l', 0, 'e', 0, 'r', 0
 };
 
-
-
-//****************************************************************************
-//
-// The serial number string.
-//
-//****************************************************************************
-const uint8_t g_pui8SerialNumberString[] =
+static uint8_t g_pui8SerialNumberString[] =
 {
     (8 + 1) * 2,
     USB_DTYPE_STRING,
-    '1', 0, '2', 0, '3', 0, '4', 0, '5', 0, '6', 0, '7', 0, '8', 0
+    '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0
 };
 
-//*****************************************************************************
-//
-// The interface description string.
-//
-//*****************************************************************************
-const uint8_t g_pui8HIDInterfaceString[] =
+static const uint8_t g_pui8HIDInterfaceString[] =
 {
     (22 + 1) * 2,
     USB_DTYPE_STRING,
@@ -147,12 +81,7 @@ const uint8_t g_pui8HIDInterfaceString[] =
     'e', 0, 'r', 0, 'f', 0, 'a', 0, 'c', 0, 'e', 0
 };
 
-//*****************************************************************************
-//
-// The configuration description string.
-//
-//*****************************************************************************
-const uint8_t g_pui8ConfigString[] =
+static const uint8_t g_pui8ConfigString[] =
 {
     (26 + 1) * 2,
     USB_DTYPE_STRING,
@@ -162,11 +91,6 @@ const uint8_t g_pui8ConfigString[] =
     'o', 0, 'n', 0
 };
 
-//*****************************************************************************
-//
-// The descriptor string table.
-//
-//*****************************************************************************
 const uint8_t * const g_ppui8StringDescriptorsKeyboard[] =
 {
     g_pui8LangDescriptor,
@@ -177,8 +101,7 @@ const uint8_t * const g_ppui8StringDescriptorsKeyboard[] =
     g_pui8ConfigString
 };
 
-#define NUM_STRING_DESCRIPTORS_KEYBOARD (sizeof(g_ppui8StringDescriptorsKeyboard) /            \
-                                sizeof(uint8_t *))
+#define NUM_STR_DESC_KB (sizeof(g_ppui8StringDescriptorsKeyboard) / sizeof(uint8_t *))
 
 const uint8_t * const g_ppui8StringDescriptorsAudio[] =
 {
@@ -187,7 +110,7 @@ const uint8_t * const g_ppui8StringDescriptorsAudio[] =
     g_pui8ProductStringAudio,
     g_pui8SerialNumberString
 };
-#define NUM_STRING_DESCRIPTORS_AUDIO (sizeof(g_ppui8StringDescriptorsAudio) / sizeof(uint8_t *))
+#define NUM_STR_DESC_AUDIO (sizeof(g_ppui8StringDescriptorsAudio) / sizeof(uint8_t *))
 
 const uint8_t * const g_ppui8StringDescriptorsGamepad[] =
 {
@@ -196,7 +119,7 @@ const uint8_t * const g_ppui8StringDescriptorsGamepad[] =
     g_pui8ProductStringGamepad,
     g_pui8SerialNumberString
 };
-#define NUM_STRING_DESCRIPTORS_GAMEPAD (sizeof(g_ppui8StringDescriptorsGamepad) / sizeof(uint8_t *))
+#define NUM_STR_DESC_GAMEPAD (sizeof(g_ppui8StringDescriptorsGamepad) / sizeof(uint8_t *))
 
 const uint8_t * const g_ppui8StringDescriptorsPrinter[] =
 {
@@ -205,7 +128,7 @@ const uint8_t * const g_ppui8StringDescriptorsPrinter[] =
     g_pui8ProductStringPrinter,
     g_pui8SerialNumberString
 };
-#define NUM_STRING_DESCRIPTORS_PRINTER (sizeof(g_ppui8StringDescriptorsPrinter) / sizeof(uint8_t *))
+#define NUM_STR_DESC_PRINTER (sizeof(g_ppui8StringDescriptorsPrinter) / sizeof(uint8_t *))
 
 const uint8_t * const g_ppui8StringDescriptorsMIDI[] =
 {
@@ -214,14 +137,24 @@ const uint8_t * const g_ppui8StringDescriptorsMIDI[] =
     g_pui8ProductStringMIDI,
     g_pui8SerialNumberString
 };
-#define NUM_STRING_DESCRIPTORS_MIDI (sizeof(g_ppui8StringDescriptorsMIDI) / sizeof(uint8_t *))
+#define NUM_STR_DESC_MIDI (sizeof(g_ppui8StringDescriptorsMIDI) / sizeof(uint8_t *))
 
-//*****************************************************************************
-//
-// The HID keyboard device initialization and customization structures.
-//
-//*****************************************************************************
-// Keyboard Device Attributes
+extern uint32_t KeyboardHandler(void *, uint32_t, uint32_t, void *);
+extern uint32_t AudioHandler(void *, uint32_t, uint32_t, void *);
+extern uint32_t GamepadHandler(void *, uint32_t, uint32_t, void *);
+extern uint32_t PrinterHandler(void *, uint32_t, uint32_t, void *);
+extern uint32_t MIDIHandler(void *, uint32_t, uint32_t, void *);
+
+void SetSerialNumberString(uint32_t value)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        uint8_t nibble = (uint8_t)((value >> (28 - i * 4)) & 0xF);
+        uint8_t c = (nibble < 10) ? ('0' + nibble) : ('A' + nibble - 10);
+        g_pui8SerialNumberString[2 + i * 2] = c;
+    }
+}
+
 tUSBDHIDKeyboardDevice g_sKeyboardDevice;
 tUSBDHIDKeyboardDevice g_sKeyboardTemplate =
 {
@@ -232,61 +165,57 @@ tUSBDHIDKeyboardDevice g_sKeyboardTemplate =
     KeyboardHandler,
     (void *)&g_sKeyboardDevice,
     g_ppui8StringDescriptorsKeyboard,
-    NUM_STRING_DESCRIPTORS_KEYBOARD
+    NUM_STR_DESC_KB
 };
-// Gamepad Device Attributes
+
 tUSBDHIDGamepadDevice g_sGamepadDevice;
 tUSBDHIDGamepadDevice g_sGamepadTemplate =
 {
     USB_VID_TI_1CBE,
-    USB_PID_GAMEPAD,
+    0x0204,
     500,
     USB_CONF_ATTR_SELF_PWR | USB_CONF_ATTR_RWAKE,
     GamepadHandler,
     (void *)&g_sGamepadDevice,
     g_ppui8StringDescriptorsGamepad,
-    NUM_STRING_DESCRIPTORS_GAMEPAD
+    NUM_STR_DESC_GAMEPAD
 };
 
-
-// Audio Device Attributes
 tUSBAudioDevice g_sAudioDevice;
 tUSBAudioDevice g_sAudioTemplate =
 {
     USB_VID_TI_1CBE,
-    USB_PID_AUDIO,
+    0x0201,
     500,
     USB_CONF_ATTR_SELF_PWR | USB_CONF_ATTR_RWAKE,
     AudioHandler,
     (void *)&g_sAudioDevice,
     g_ppui8StringDescriptorsAudio,
-    NUM_STRING_DESCRIPTORS_AUDIO
+    NUM_STR_DESC_AUDIO
 };
 
-// Printer Device Attributes
 tUSBPrinterDevice g_sPrinterDevice;
 tUSBPrinterDevice g_sPrinterTemplate =
 {
     USB_VID_TI_1CBE,
-    USB_PID_PRINTER,
+    0x0202,
     500,
     USB_CONF_ATTR_SELF_PWR | USB_CONF_ATTR_RWAKE,
     PrinterHandler,
     (void *)&g_sPrinterDevice,
     g_ppui8StringDescriptorsPrinter,
-    NUM_STRING_DESCRIPTORS_PRINTER
+    NUM_STR_DESC_PRINTER
 };
 
-// MIDI Device Attributes
 tUSBMIDIDevice g_sMIDIDevice;
 tUSBMIDIDevice g_sMIDITemplate =
 {
     USB_VID_TI_1CBE,
-    USB_PID_MIDI,
+    0x0203,
     500,
     USB_CONF_ATTR_SELF_PWR | USB_CONF_ATTR_RWAKE,
     MIDIHandler,
     (void *)&g_sMIDIDevice,
     g_ppui8StringDescriptorsMIDI,
-    NUM_STRING_DESCRIPTORS_MIDI
+    NUM_STR_DESC_MIDI
 };

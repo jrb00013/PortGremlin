@@ -16,6 +16,8 @@ RemoteSystemsTempFiles/
 # Python
 __pycache__/
 *.pyc
+.venv/
+reports/
 
 # OS junk
 .DS_Store

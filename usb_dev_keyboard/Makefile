@@ -25,7 +25,11 @@ LDFLAGS += -L$(TIVAWARE_PATH)/driverlib/gcc -L$(TIVAWARE_PATH)/usblib/gcc
 
 LIBS := -ldriverlib -lusblib -lc
 
-SRCS := usb_dev_keyboard.c usb_keyb_structs.c startup_gcc.c
+SRCS := usb_dev_keyboard.c usb_keyb_structs.c portgremlin_config.c \
+        portgremlin_vidpid.c portgremlin_strings.c portgremlin_uart.c \
+        portgremlin_oracle.c portgremlin_persona.c portgremlin_mimic.c \
+        portgremlin_telemetry.c portgremlin_evolve.c \
+        startup_gcc.c
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all clean size flash gdb

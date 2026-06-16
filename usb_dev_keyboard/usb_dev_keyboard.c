@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_gpio.h"
@@ -24,6 +25,12 @@
 #include "utils/uartstdio.h"
 #include "utils/ustdlib.h"
 #include "usb_keyb_structs.h"
+#include "portgremlin_config.h"
+#include "portgremlin_vidpid.h"
+#include "portgremlin_strings.h"
+#include "portgremlin_uart.h"
+#include "portgremlin_evolve.h"
+#include "portgremlin_telemetry.h"
 
 #define SYSTICKS_PER_SECOND     100
 #define USB_RESUME_DURATION_MS  15
@@ -159,6 +166,8 @@ static bool WaitForSendIdle(uint_fast32_t ui32TimeoutTicks);
 uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event,
                           uint32_t ui32MsgData, void *pvMsgData)
 {
+    PortGremlinOracleOnEvent(ui32Event);
+
     switch (ui32Event)
     {
         case USB_EVENT_CONNECTED:
@@ -196,6 +205,8 @@ uint32_t KeyboardHandler(void *pvCBData, uint32_t ui32Event,
 uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event,
                          uint32_t ui32MsgParam, void *pvMsgData)
 {
+    PortGremlinOracleOnEvent(ui32Event);
+
     switch (ui32Event)
     {
         case USB_EVENT_CONNECTED:
@@ -228,6 +239,8 @@ uint32_t GamepadHandler(void *pvCBData, uint32_t ui32Event,
 uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event,
                        uint32_t ui32MsgParam, void *pvMsgData)
 {
+    PortGremlinOracleOnEvent(ui32Event);
+
     switch (ui32Event)
     {
         case USB_EVENT_CONNECTED:
@@ -260,6 +273,8 @@ uint32_t AudioHandler(void *pvCBData, uint32_t ui32Event,
 uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event,
                          uint32_t ui32MsgParam, void *pvMsgData)
 {
+    PortGremlinOracleOnEvent(ui32Event);
+
     switch (ui32Event)
     {
         case USB_EVENT_CONNECTED:
@@ -292,6 +307,8 @@ uint32_t PrinterHandler(void *pvCBData, uint32_t ui32Event,
 uint32_t MIDIHandler(void *pvCBData, uint32_t ui32Event,
                       uint32_t ui32MsgParam, void *pvMsgData)
 {
+    PortGremlinOracleOnEvent(ui32Event);
+
     switch (ui32Event)
     {
         case USB_EVENT_CONNECTED:
@@ -397,19 +414,13 @@ void ConfigureUART(void)
 
 void PrepareDevice(VIDPIDDeviceType type)
 {
-    uint16_t vid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
-    uint16_t pid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
-
     switch (type)
     {
         case VIDPID_TYPE_KEYBOARD:
         {
             static uint8_t s_DeviceBuffer[sizeof(tUSBDHIDKeyboardDevice)];
             memcpy(s_DeviceBuffer, &g_sKeyboardTemplate, sizeof(g_sKeyboardTemplate));
-            uint16_t *pVID = (uint16_t *)(s_DeviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16VID));
-            uint16_t *pPID = (uint16_t *)(s_DeviceBuffer + offsetof(tUSBDHIDKeyboardDevice, ui16PID));
-            *pVID = vid;
-            *pPID = pid;
+            PortGremlinRandomizeVIDPID(s_DeviceBuffer, VIDPID_TYPE_KEYBOARD);
             USBDHIDKeyboardInit(0, (tUSBDHIDKeyboardDevice *)s_DeviceBuffer);
             break;
         }
@@ -418,8 +429,7 @@ void PrepareDevice(VIDPIDDeviceType type)
         {
             static tUSBAudioDevice s_AudioDevice;
             s_AudioDevice = g_sAudioTemplate;
-            s_AudioDevice.ui16VID = vid;
-            s_AudioDevice.ui16PID = pid;
+            PortGremlinRandomizeVIDPID(&s_AudioDevice, VIDPID_TYPE_AUDIO);
             USBAudioInit(0, &s_AudioDevice);
             break;
         }
@@ -428,8 +438,7 @@ void PrepareDevice(VIDPIDDeviceType type)
         {
             static tUSBMIDIDevice s_MIDIDevice;
             s_MIDIDevice = g_sMIDITemplate;
-            s_MIDIDevice.ui16VID = vid;
-            s_MIDIDevice.ui16PID = pid;
+            PortGremlinRandomizeVIDPID(&s_MIDIDevice, VIDPID_TYPE_MIDI);
             USBMIDIInit(0, &s_MIDIDevice);
             break;
         }
@@ -438,8 +447,7 @@ void PrepareDevice(VIDPIDDeviceType type)
         {
             static tUSBPrinterDevice s_PrinterDevice;
             s_PrinterDevice = g_sPrinterTemplate;
-            s_PrinterDevice.ui16VID = vid;
-            s_PrinterDevice.ui16PID = pid;
+            PortGremlinRandomizeVIDPID(&s_PrinterDevice, VIDPID_TYPE_PRINTER);
             USBPrinterInit(0, &s_PrinterDevice);
             break;
         }
@@ -452,58 +460,7 @@ void PrepareDevice(VIDPIDDeviceType type)
 
 void RandomizeVIDPID(void *pDevice, VIDPIDDeviceType type)
 {
-    uint16_t vid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
-    uint16_t pid = (uint16_t)(0x1000 + (rand() % 0xEFFF));
-
-    switch (type)
-    {
-        case VIDPID_TYPE_KEYBOARD:
-        {
-            tUSBDHIDKeyboardDevice *pKb = (tUSBDHIDKeyboardDevice *)pDevice;
-            pKb->ui16VID = vid;
-            pKb->ui16PID = pid;
-            break;
-        }
-
-        case VIDPID_TYPE_AUDIO:
-        {
-            tUSBAudioDevice *pAudio = (tUSBAudioDevice *)pDevice;
-            pAudio->ui16VID = vid;
-            pAudio->ui16PID = pid;
-            break;
-        }
-
-        case VIDPID_TYPE_MIDI:
-        {
-            tUSBMIDIDevice *pMIDI = (tUSBMIDIDevice *)pDevice;
-            pMIDI->ui16VID = vid;
-            pMIDI->ui16PID = pid;
-            break;
-        }
-
-        case VIDPID_TYPE_PRINTER:
-        {
-            tUSBPrinterDevice *pPrinter = (tUSBPrinterDevice *)pDevice;
-            pPrinter->ui16VID = vid;
-            pPrinter->ui16PID = pid;
-            break;
-        }
-
-        case VIDPID_TYPE_GAMEPAD:
-        {
-            tUSBDHIDGamepadDevice *pPad = (tUSBDHIDGamepadDevice *)pDevice;
-            pPad->ui16VID = vid;
-            pPad->ui16PID = pid;
-            break;
-        }
-
-        case VIDPID_TYPE_GENERIC:
-            break;
-
-        default:
-            UARTprintf("Unknown device type in RandomizeVIDPID.\n");
-            break;
-    }
+    PortGremlinRandomizeVIDPID(pDevice, type);
 }
 
 void USBAudioDeviceInit(uint32_t ui32Index, tUSBAudioDevice *pDevice)
@@ -578,7 +535,9 @@ void USBPrinterRemoteWakeupRequest(void *pDevice)
 
 void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
 {
-    UARTprintf("Re-enumerating USB with new VID/PID...\n\r");
+    UARTprintf("Re-enumerating USB with new identity...\n\r");
+
+    PortGremlinRandomizeIdentity(g_eCurrentDevice);
 
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
@@ -587,35 +546,35 @@ void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
     {
         case VIDPID_TYPE_KEYBOARD:
             USBDHIDKeyboardTerm(&g_sKeyboardDevice);
-            RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
+            PortGremlinRandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sKeyboardDevice.ui16VID, g_sKeyboardDevice.ui16PID);
             USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
             break;
 
         case VIDPID_TYPE_AUDIO:
-            RandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
+            PortGremlinRandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sAudioDevice.ui16VID, g_sAudioDevice.ui16PID);
             USBAudioInit(0, &g_sAudioDevice);
             break;
 
         case VIDPID_TYPE_GAMEPAD:
-            RandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
+            PortGremlinRandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sGamepadDevice.ui16VID, g_sGamepadDevice.ui16PID);
             USBDHIDGamepadInit(0, &g_sGamepadDevice);
             break;
 
         case VIDPID_TYPE_MIDI:
-            RandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
+            PortGremlinRandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sMIDIDevice.ui16VID, g_sMIDIDevice.ui16PID);
             USBMIDIInit(0, &g_sMIDIDevice);
             break;
 
         case VIDPID_TYPE_PRINTER:
-            RandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
+            PortGremlinRandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
             UARTprintf("New VID: 0x%04X, PID: 0x%04X\n\r",
                 g_sPrinterDevice.ui16VID, g_sPrinterDevice.ui16PID);
             USBPrinterInit(0, &g_sPrinterDevice);
@@ -626,16 +585,41 @@ void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
             break;
     }
 
+    g_sConfig.ui32EnumCount++;
+    PortGremlinTelemetryCurrentIdentity();
+    PortGremlinOracleOnEnumerate();
+    PortGremlinEvolveTick();
     USBDevConnect(USB0_BASE);
+}
+
+static VIDPIDDeviceType DeviceTypeToVIDPID(DeviceType eDevice)
+{
+    switch (eDevice)
+    {
+        case DEVICE_KEYBOARD: return VIDPID_TYPE_KEYBOARD;
+        case DEVICE_AUDIO:    return VIDPID_TYPE_AUDIO;
+        case DEVICE_PRINTER:  return VIDPID_TYPE_PRINTER;
+        case DEVICE_MIDI:     return VIDPID_TYPE_MIDI;
+        case DEVICE_GAMEPAD:  return VIDPID_TYPE_GAMEPAD;
+        default:              return VIDPID_TYPE_GENERIC;
+    }
 }
 
 void CycleDeviceType(void)
 {
+    DeviceType eNext = PortGremlinNextEnabledDevice(g_eCurrentDevice);
+
+    if (eNext == g_eCurrentDevice && !g_sConfig.bClassEnabled[g_eCurrentDevice])
+    {
+        UARTprintf("No enabled device classes.\n\r");
+        return;
+    }
+
     USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
 
-    g_eCurrentDevice = (DeviceType)(((int)g_eCurrentDevice + 1) % (int)NUM_DEVICE_TYPES);
-    SetSerialNumberString((uint32_t)(rand() ^ (rand() << 16)));
+    g_eCurrentDevice = eNext;
+    PortGremlinRandomizeIdentity(g_eCurrentDevice);
 
     switch (g_eCurrentDevice)
     {
@@ -643,7 +627,7 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Keyboard...\n");
             g_sKeyboardDevice = g_sKeyboardTemplate;
             g_pActiveDevice = &g_sKeyboardDevice;
-            RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
+            PortGremlinRandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
             g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
             USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
             break;
@@ -652,7 +636,7 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Audio...\n");
             g_sAudioDevice = g_sAudioTemplate;
             g_pActiveDevice = &g_sAudioDevice;
-            RandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
+            PortGremlinRandomizeVIDPID(&g_sAudioDevice, VIDPID_TYPE_AUDIO);
             g_eCurrentDeviceType = VIDPID_TYPE_AUDIO;
             USBAudioInit(0, &g_sAudioDevice);
             break;
@@ -661,7 +645,7 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Printer...\n");
             g_sPrinterDevice = g_sPrinterTemplate;
             g_pActiveDevice = &g_sPrinterDevice;
-            RandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
+            PortGremlinRandomizeVIDPID(&g_sPrinterDevice, VIDPID_TYPE_PRINTER);
             g_eCurrentDeviceType = VIDPID_TYPE_PRINTER;
             USBPrinterInit(0, &g_sPrinterDevice);
             break;
@@ -670,7 +654,7 @@ void CycleDeviceType(void)
             UARTprintf("Switching to MIDI...\n");
             g_sMIDIDevice = g_sMIDITemplate;
             g_pActiveDevice = &g_sMIDIDevice;
-            RandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
+            PortGremlinRandomizeVIDPID(&g_sMIDIDevice, VIDPID_TYPE_MIDI);
             g_eCurrentDeviceType = VIDPID_TYPE_MIDI;
             USBMIDIInit(0, &g_sMIDIDevice);
             break;
@@ -679,48 +663,45 @@ void CycleDeviceType(void)
             UARTprintf("Switching to Gamepad...\n");
             g_sGamepadDevice = g_sGamepadTemplate;
             g_pActiveDevice = &g_sGamepadDevice;
-            RandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
+            PortGremlinRandomizeVIDPID(&g_sGamepadDevice, VIDPID_TYPE_GAMEPAD);
             g_eCurrentDeviceType = VIDPID_TYPE_GAMEPAD;
             USBDHIDGamepadInit(0, &g_sGamepadDevice);
             break;
+
+        default:
+            break;
     }
 
+    g_sConfig.ui32CycleCount++;
     USBDevConnect(USB0_BASE);
 }
 
 void SysTickIntHandler(void)
 {
-    static uint32_t tickCounter = 0;
+    static uint32_t ui32TickCounter = 0;
     g_ui32SysTickCount++;
 
-    tickCounter++;
-    if (tickCounter >= 5)
+    if (!g_sConfig.bAutoCycle)
     {
-        tickCounter = 0;
-
-        switch (g_eCurrentDevice)
-        {
-            case DEVICE_KEYBOARD:
-                ReenumerateWithRandomVIDPID(VIDPID_TYPE_KEYBOARD);
-                break;
-            case DEVICE_AUDIO:
-                ReenumerateWithRandomVIDPID(VIDPID_TYPE_AUDIO);
-                break;
-            case DEVICE_GAMEPAD:
-                ReenumerateWithRandomVIDPID(VIDPID_TYPE_GAMEPAD);
-                break;
-            case DEVICE_MIDI:
-                ReenumerateWithRandomVIDPID(VIDPID_TYPE_MIDI);
-                break;
-            case DEVICE_PRINTER:
-                ReenumerateWithRandomVIDPID(VIDPID_TYPE_PRINTER);
-                break;
-            default:
-                break;
-        }
-
-        g_eCurrentDevice = (DeviceType)(((int)g_eCurrentDevice + 1) % (int)NUM_DEVICE_TYPES);
+        return;
     }
+
+    ui32TickCounter++;
+    if (ui32TickCounter < g_sConfig.ui32CycleIntervalTicks)
+    {
+        return;
+    }
+    ui32TickCounter = 0;
+
+    if (!g_sConfig.bClassEnabled[g_eCurrentDevice])
+    {
+        g_eCurrentDevice = PortGremlinNextEnabledDevice(g_eCurrentDevice);
+        g_eCurrentDeviceType = DeviceTypeToVIDPID(g_eCurrentDevice);
+    }
+
+    ReenumerateWithRandomVIDPID(g_eCurrentDeviceType);
+    g_eCurrentDevice = PortGremlinNextEnabledDevice(g_eCurrentDevice);
+    g_eCurrentDeviceType = DeviceTypeToVIDPID(g_eCurrentDevice);
 }
 
 int main(void)
@@ -732,7 +713,14 @@ int main(void)
     srand(MAP_SysCtlClockGet());
 
     ConfigureUART();
-    UARTprintf("PortGremlin - USB Identity Spoofer\n\r");
+    PortGremlinConfigInit();
+    PortGremlinOracleInit();
+    PortGremlinPersonaInit();
+    PortGremlinTelemetryInit();
+    PortGremlinEvolveInit();
+    UsbKeybStructsInit();
+    UARTprintf("PortGremlin NEXUS - Closed-Loop USB Attack Platform\n\r");
+    PortGremlinUARTPrintHelp();
 
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     MAP_GPIOPinTypeUSBAnalog(GPIO_PORTD_BASE, GPIO_PIN_4 | GPIO_PIN_5);
@@ -759,8 +747,8 @@ int main(void)
     g_eCurrentDevice = DEVICE_KEYBOARD;
     g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
     g_pActiveDevice = &g_sKeyboardDevice;
-    RandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
-    SetSerialNumberString((uint32_t)(rand() ^ (rand() << 16)));
+    PortGremlinRandomizeIdentity(DEVICE_KEYBOARD);
+    PortGremlinRandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
     USBDHIDKeyboardInit(0, &g_sKeyboardDevice);
 
     MAP_SysTickPeriodSet(MAP_SysCtlClockGet() / SYSTICKS_PER_SECOND);
@@ -774,7 +762,13 @@ int main(void)
 
         UARTprintf("Waiting for host...\n\r");
 
-        while (!g_bConnected) { }
+        while (!g_bConnected)
+        {
+            PortGremlinUARTPoll();
+            PortGremlinBrainTick();
+            PortGremlinChoreoTick();
+            PortGremlinEvolveTick();
+        }
 
         UARTprintf("Host connected.\n\r");
 
@@ -785,6 +779,22 @@ int main(void)
         {
             MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, GPIO_PIN_2);
             uint32_t ui32LastTickCount = g_ui32SysTickCount;
+
+            PortGremlinUARTPoll();
+            PortGremlinBrainTick();
+            PortGremlinChoreoTick();
+            PortGremlinEvolveTick();
+
+            if (g_sConfig.bForceCycle)
+            {
+                g_sConfig.bForceCycle = false;
+                CycleDeviceType();
+            }
+            else if (g_sConfig.bForceReenum)
+            {
+                g_sConfig.bForceReenum = false;
+                ReenumerateWithRandomVIDPID(g_eCurrentDeviceType);
+            }
 
             if (bLastSuspend != g_bSuspended)
             {

@@ -99,5 +99,6 @@ extern const uint8_t * const g_ppui8StringDescriptorsPrinter[];
 extern const uint8_t * const g_ppui8StringDescriptorsMIDI[];
 
 void SetSerialNumberString(uint32_t value);
+void UsbKeybStructsInit(void);
 
 #endif

@@ -120,14 +120,91 @@ setup_python() {
     ok "Python deps installed"
 }
 
+check_tivaware() {
+    [[ -d "${TIVAWARE_PATH}" ]] && return 0
+    return 1
+}
+
+print_tivaware_hint() {
+    warn "TivaWare SDK not found at ${TIVAWARE_PATH}"
+    echo "  The firmware build needs TI's TivaWare C Series SDK (~500 MB)."
+    echo "  It is not redistributable, so it is not vendored or downloaded here."
+    echo "  1. Download the C Series SDK from TI (accept the license):"
+    echo "       https://www.ti.com/tool/download/TIVAWARE-C-SERIES"
+    echo "  2. Point this script at it:"
+    echo "       export TIVAWARE_PATH=/path/to/TivaWare_C_Series-2.2.0.295"
+    echo "  3. Re-run: ./setup.sh --flash"
+    echo ""
+    echo "  The Virtual Lab needs none of this:  ./setup.sh --run --virtual"
+}
+
+# Report exactly what this machine can and cannot do, without changing it.
+do_doctor() {
+    print_banner
+    info "PortGremlin environment check"
+    echo ""
+
+    local gaps=0
+
+    if have python3; then
+        ok "python3: $(python3 --version 2>&1)"
+    else
+        fail "python3 not found"
+    fi
+
+    if python3 -c "import serial" 2>/dev/null; then
+        ok "pyserial: importable"
+    else
+        warn "pyserial not installed — run: pip install -r tools/requirements.txt"
+        gaps=$((gaps + 1))
+    fi
+
+    if python3 -c "import tkinter" 2>/dev/null; then
+        ok "tkinter: available (Virtual Lab GUI will open)"
+    else
+        warn "tkinter not available — Virtual Lab GUI needs python3-tk"
+        gaps=$((gaps + 1))
+    fi
+
+    if have arm-none-eabi-gcc; then
+        ok "arm-none-eabi-gcc: $(arm-none-eabi-gcc --version | head -1)"
+    else
+        warn "arm-none-eabi-gcc not found — install gcc-arm-none-eabi"
+        gaps=$((gaps + 1))
+    fi
+
+    if have lm4flash; then
+        ok "lm4flash: available"
+    else
+        warn "lm4flash not found — install lm4flash to flash over ICDI"
+        gaps=$((gaps + 1))
+    fi
+
+    if check_tivaware; then
+        ok "TivaWare SDK: ${TIVAWARE_PATH}"
+    else
+        print_tivaware_hint
+        gaps=$((gaps + 1))
+    fi
+
+    echo ""
+    if [[ "${gaps}" -eq 0 ]]; then
+        ok "Hardware path fully available."
+    else
+        warn "${gaps} optional prerequisite(s) missing."
+        echo "  Virtual Lab (GUI, no hardware) is available regardless."
+    fi
+    return 0
+}
+
 build_firmware() {
     if ! have arm-none-eabi-gcc; then
         warn "Skipping firmware build (no toolchain)"
         return 0
     fi
-    if [[ ! -d "${TIVAWARE_PATH}" ]]; then
+    if ! check_tivaware; then
         warn "Skipping firmware build — TivaWare not at ${TIVAWARE_PATH}"
-        warn "  export TIVAWARE_PATH=/opt/ti/TivaWare_C_Series-2.2.0.295"
+        print_tivaware_hint
         return 0
     fi
     info "Building firmware..."
@@ -244,7 +321,7 @@ do_run() {
 }
 
 main() {
-    cd "${ROOT}"
+    cd "${ROOT}" || exit 1
 
     case "${1:-}" in
         --run)
@@ -266,9 +343,13 @@ main() {
             MODE="flash"
             do_setup_flash
             ;;
+        --doctor)
+            do_doctor
+            ;;
         --help|-h)
             echo "Usage:"
             echo "  ./setup.sh                 Interactive setup (choose Virtual or Flash)"
+            echo "  ./setup.sh --doctor        Check prerequisites, change nothing"
             echo "  ./setup.sh --virtual       Setup Virtual Lab only"
             echo "  ./setup.sh --flash         Setup hardware toolchain + firmware"
             echo "  ./setup.sh --run           Interactive run"

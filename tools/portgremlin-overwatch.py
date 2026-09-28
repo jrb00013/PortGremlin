@@ -33,7 +33,7 @@ except ImportError:
     print("Run ./setup.sh first to install dependencies.", file=sys.stderr)
     sys.exit(1)
 
-PG_JSON_RE = re.compile(r"@PG(\{.*\})")
+PG_JSON_RE = re.compile(r"@PG(\{[^{}]*\})")
 USB_ERROR_RE = re.compile(
     r"(usb|USB|xhci|ehci|ohci|udev).*(error|fail|reject|stall|timeout|unable|warn)",
     re.IGNORECASE,
@@ -138,15 +138,14 @@ def parse_pg_event(payload: dict[str, Any]) -> None:
 def handle_device_line(line: str, ser: Optional[serial.Serial]) -> None:
     log_event("dev", line)
 
-    m = PG_JSON_RE.search(line)
-    if m:
+    for m in PG_JSON_RE.finditer(line):
         try:
             payload = json.loads(m.group(1))
-            parse_pg_event(payload)
-            log_event("json", json.dumps(payload))
-            maybe_autonomous_escalate(ser, payload)
         except json.JSONDecodeError:
-            pass
+            continue
+        parse_pg_event(payload)
+        log_event("json", json.dumps(payload))
+        maybe_autonomous_escalate(ser, payload)
 
 
 def maybe_autonomous_escalate(ser: Optional[serial.Serial], payload: dict[str, Any]) -> None:

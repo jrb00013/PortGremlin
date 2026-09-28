@@ -33,7 +33,6 @@ void PortGremlinUARTPrintHelp(void)
     UARTprintf("  o  - oracle host fingerprint report\n\r");
     UARTprintf("  d  - driver confusion (same VID, diff class)\n\r");
     UARTprintf("  v  - print mimic vault\n\r");
-    UARTprintf("  0-9- deploy mimic profile N\n\r");
     UARTprintf("  [  - choreo RedTeam  ]  - Stealth  \\  - Blitz\n\r");
     UARTprintf("--- Overdrive ---\n\r");
     UARTprintf("  g  - genetic evolution engine\n\r");

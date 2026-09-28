@@ -1,0 +1,82 @@
+name: CI
+
+# Replaces the CMake workflow that was deleted in a7bc633. That job referenced
+# a CMakeLists.txt the project no longer has (the build is a plain Makefile),
+# so it failed on every run and was removed rather than fixed. This workflow
+# gates the surfaces that are actually verifiable in CI.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  host-tools:
+    name: Host tools & tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tools/requirements.txt
+          pip install pytest
+
+      # Catches the class of bug that shipped in tools/portgremlin-cli.py: a
+      # host tool with a syntax error, advertised in the README, reachable by
+      # no automated check.
+      - name: Byte-compile every host tool
+        run: python -m compileall -q tools
+
+      - name: Run the test suite
+        run: python -m pytest tests -v
+
+      - name: Check setup.sh syntax
+        run: bash -n setup.sh
+
+      # Advisory for now: the project has no shellcheck baseline, so findings
+      # are surfaced rather than enforced. Promote to blocking once the existing
+      # warnings have been triaged.
+      - name: Lint setup.sh (advisory)
+        continue-on-error: true
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck
+          shellcheck -S warning setup.sh
+
+  firmware-build:
+    name: Firmware build (requires TivaWare)
+    runs-on: ubuntu-latest
+    # The firmware depends on TI TivaWare: a ~500 MB SDK behind a license
+    # click-through that CI cannot fetch unattended. Rather than let this job
+    # fail on every push, it is opt-in. Set the repository variable
+    # TIVAWARE_AVAILABLE=true and provide a cached SDK at $TIVAWARE_PATH to
+    # enable it. Until then, `make -C usb_dev_keyboard` is the source of truth.
+    if: ${{ vars.TIVAWARE_AVAILABLE == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ARM toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: Build firmware
+        env:
+          TIVAWARE_PATH: ${{ vars.TIVAWARE_PATH }}
+        run: make -C usb_dev_keyboard

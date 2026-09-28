@@ -81,6 +81,35 @@ MIMIC_VAULT: list[MimicProfile] = [
 
 KNOWN_VIDS = [0x046D, 0x045E, 0x05AC, 0x8087, 0x1D6B, 0x0BDA, 0x413C]
 
+# Single source of truth for host fingerprinting: (nominal latency ms, nominal
+# reset count). Used both to synthesise a host's behaviour and to classify it,
+# so the two can never drift apart.
+HOST_LATENCY_PROFILES: dict[HostOS, tuple[int, int]] = {
+    HostOS.WINDOWS: (18, 2),
+    HostOS.LINUX: (95, 0),
+    HostOS.MACOS: (45, 0),
+    HostOS.EMBEDDED: (120, 0),
+    HostOS.UNKNOWN: (60, 1),
+}
+
+# Latency jitter applied to the nominal profile above.
+HOST_LATENCY_JITTER = 8
+
+# A reading further than this from every known profile is reported as UNKNOWN
+# rather than guessed. Sized to admit worst-case latency jitter plus one noisy
+# reset. The UNKNOWN profile itself (60ms) sits close to macOS (45ms), so the
+# two are genuinely ambiguous in the 52-56ms overlap; an honest "unknown" is
+# preferable to a confident wrong answer feeding persona choice.
+HOST_MATCH_TOLERANCE = 14
+
+# A reset pattern this persistent is a Windows signature regardless of latency.
+HOST_WINDOWS_RESET_THRESHOLD = 2
+
+# Cost of a single reset-count mismatch when scoring a candidate profile. Kept
+# low on purpose: resets >= 2 already short-circuit to Windows, so below that
+# threshold a stray reset is noise rather than signal.
+HOST_RESET_WEIGHT = 5
+
 
 @dataclass
 class Genome:
@@ -164,35 +193,51 @@ class PortGremlinSimulator:
         self.log("oracle", f"Host set to {host.value}")
 
     def _host_latency_profile(self) -> tuple[int, int]:
-        profiles = {
-            HostOS.WINDOWS: (18, 2),
-            HostOS.LINUX: (95, 0),
-            HostOS.MACOS: (45, 0),
-            HostOS.EMBEDDED: (120, 0),
-            HostOS.UNKNOWN: (60, 1),
-        }
-        base, resets = profiles[self.state.host_os]
-        return base + random.randint(-8, 8), resets + (1 if random.random() < 0.15 else 0)
+        base, resets = HOST_LATENCY_PROFILES[self.state.host_os]
+        jitter = random.randint(-HOST_LATENCY_JITTER, HOST_LATENCY_JITTER)
+        extra = 1 if random.random() < 0.15 else 0
+        return max(0, base + jitter), resets + extra
 
     def classify_host(self) -> None:
         lat = self.state.config_latency_ms
         rst = self.state.reset_count
-        if rst >= 2:
+
+        if rst >= HOST_WINDOWS_RESET_THRESHOLD:
             detected = HostOS.WINDOWS
-        elif lat > 80:
-            detected = HostOS.LINUX
-        elif 0 < lat < 25:
-            detected = HostOS.WINDOWS
-        elif 25 <= lat <= 80:
-            detected = HostOS.MACOS
         else:
-            detected = HostOS.EMBEDDED
+            best = HostOS.UNKNOWN
+            best_score: Optional[int] = None
+            for host, (base, resets) in HOST_LATENCY_PROFILES.items():
+                if host is HostOS.UNKNOWN:
+                    continue
+                score = abs(lat - base) + abs(rst - resets) * HOST_RESET_WEIGHT
+                if best_score is None or score < best_score:
+                    best, best_score = host, score
+            if best_score is not None and best_score <= HOST_MATCH_TOLERANCE:
+                detected = best
+            else:
+                detected = HostOS.UNKNOWN
+
         self.state.host_os = detected
         self.log("oracle", f"Host classified: {detected.value} (cfg={lat}ms, resets={rst})")
 
+    def _contradiction_pinned(self) -> bool:
+        """True when a real pinned identity is available for driver confusion.
+
+        VID 0x0000 is the reserved "no device" identity, so an unpinned
+        contradiction must never be allowed to drive the emitted descriptor.
+        """
+        return self.state.pinned_vid != 0 and self.state.pinned_pid != 0
+
+    def _ensure_pinned_identity(self) -> None:
+        st = self.state
+        if st.pinned_vid == 0 or st.pinned_pid == 0:
+            st.pinned_vid = random.randint(0x1000, 0xFFFF)
+            st.pinned_pid = random.randint(0x1000, 0xFFFF)
+
     def _random_vid_pid(self) -> tuple[int, int]:
         st = self.state
-        if st.contradiction and st.pinned_vid:
+        if st.contradiction and self._contradiction_pinned():
             return st.pinned_vid, st.pinned_pid
         if st.malformed and random.random() < 0.3:
             return random.choice([0x0000, 0xFFFF]), random.choice([0x0000, 0xFFFF])
@@ -219,8 +264,7 @@ class PortGremlinSimulator:
         elif persona == Persona.HAUNTED:
             st.auto_cycle, st.malformed = True, True
             st.contradiction = True
-            st.pinned_vid = random.randint(0x1000, 0xFFFF)
-            st.pinned_pid = random.randint(0x1000, 0xFFFF)
+            self._ensure_pinned_identity()
             st.genome.interval = 4
         elif persona == Persona.PHANTOM:
             st.auto_cycle, st.malformed = True, False
@@ -254,7 +298,7 @@ class PortGremlinSimulator:
     def toggle_brain(self) -> None:
         st = self.state
         st.brain_active = not st.brain_active
-        st.brain_phase = BrainPhase.IDLE if st.brain_active else BrainPhase.IDLE
+        st.brain_phase = BrainPhase.IDLE
         self.log("brain", f"Gremlin Brain {'ACTIVE' if st.brain_active else 'off'}")
 
     def toggle_evolve(self) -> None:
@@ -268,10 +312,13 @@ class PortGremlinSimulator:
 
     def overdrive(self) -> None:
         st = self.state
+        # Set the flags directly rather than going through toggle_evolve():
+        # the toggle enforces brain/evolve mutual exclusion, which is correct
+        # for a manual toggle but would silently switch the Brain back off
+        # here, leaving Overdrive without the escalation ladder it advertises.
         st.brain_active = True
+        st.evolve_active = True
         st.brain_phase = BrainPhase.IDLE
-        if not st.evolve_active:
-            self.toggle_evolve()
         self._apply_persona_config(Persona.STORM)
         st.auto_cycle = True
         self.log("host", "OVERDRIVE — full autonomous stack engaged", "warn")
@@ -280,8 +327,7 @@ class PortGremlinSimulator:
         st = self.state
         st.contradiction = not st.contradiction
         if st.contradiction:
-            st.pinned_vid = random.randint(0x1000, 0xFFFF)
-            st.pinned_pid = random.randint(0x1000, 0xFFFF)
+            self._ensure_pinned_identity()
             self.log("device", f"Driver confusion ON {st.pinned_vid:04X}:{st.pinned_pid:04X}")
         else:
             self.log("device", "Driver confusion OFF")
@@ -356,7 +402,7 @@ class PortGremlinSimulator:
             self.log("host", "Host disconnected device (stack rejection)", "warn")
             if st.evolve_active:
                 self._mutate_genome()
-            if st.brain_active and st.brain_phase.value not in ("Idle", "Probe"):
+            if st.brain_active and st.brain_phase not in (BrainPhase.IDLE, BrainPhase.PROBE):
                 st.brain_phase = BrainPhase.PROBE
                 self._apply_persona_config(Persona.PHANTOM)
                 self.log("brain", "De-escalating to PROBE")
@@ -367,7 +413,7 @@ class PortGremlinSimulator:
             self.deploy_mimic(random.randint(0, len(MIMIC_VAULT) - 1))
         else:
             st.vid, st.pid = self._random_vid_pid()
-            if st.contradiction:
+            if st.contradiction and self._contradiction_pinned():
                 st.vid, st.pid = st.pinned_vid, st.pinned_pid
             classes = DeviceClass.all()
             if st.auto_cycle:
@@ -415,6 +461,8 @@ class PortGremlinSimulator:
         if st.evolve_active:
             st.malformed = st.genome.malformed
             st.contradiction = st.genome.contradiction
+            if st.contradiction:
+                self._ensure_pinned_identity()
             interval = st.genome.interval * 0.05
         self._tick_accum += dt
         if self._tick_accum >= interval:

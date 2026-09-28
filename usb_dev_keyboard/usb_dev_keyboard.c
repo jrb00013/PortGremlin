@@ -16,6 +16,7 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/systick.h"
 #include "driverlib/uart.h"
+#include "driverlib/usb.h"
 #include "usblib/usblib.h"
 #include "usblib/usbhid.h"
 #include "usblib/device/usbdevice.h"
@@ -412,6 +413,18 @@ void ConfigureUART(void)
     UARTStdioConfig(0, 115200, 16000000);
 }
 
+/* Local class inits — defined below, used by PrepareDevice / cycle paths. */
+void USBAudioInit(uint32_t ui32Index, tUSBAudioDevice *pDevice);
+void USBMIDIInit(uint32_t ui32Index, tUSBMIDIDevice *pDevice);
+void USBPrinterInit(uint32_t ui32Index, tUSBPrinterDevice *pDevice);
+void USBDHIDGamepadInit(uint32_t ui32Index, tUSBDHIDGamepadDevice *pDevice);
+
+static void CopyKeyboardTemplate(void)
+{
+    /* tUSBDHIDKeyboardDevice has const members; memcpy past that. */
+    memcpy(&g_sKeyboardDevice, &g_sKeyboardTemplate, sizeof(g_sKeyboardDevice));
+}
+
 void PrepareDevice(VIDPIDDeviceType type)
 {
     switch (type)
@@ -539,7 +552,7 @@ void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
 
     PortGremlinRandomizeIdentity(g_eCurrentDevice);
 
-    USBDevDisconnect(USB0_BASE);
+    MAP_USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
 
     switch (deviceType)
@@ -589,7 +602,7 @@ void ReenumerateWithRandomVIDPID(VIDPIDDeviceType deviceType)
     PortGremlinTelemetryCurrentIdentity();
     PortGremlinOracleOnEnumerate();
     PortGremlinEvolveTick();
-    USBDevConnect(USB0_BASE);
+    MAP_USBDevConnect(USB0_BASE);
 }
 
 static VIDPIDDeviceType DeviceTypeToVIDPID(DeviceType eDevice)
@@ -615,7 +628,7 @@ void CycleDeviceType(void)
         return;
     }
 
-    USBDevDisconnect(USB0_BASE);
+    MAP_USBDevDisconnect(USB0_BASE);
     SysCtlDelay(SysCtlClockGet() / 3);
 
     g_eCurrentDevice = eNext;
@@ -625,7 +638,7 @@ void CycleDeviceType(void)
     {
         case DEVICE_KEYBOARD:
             UARTprintf("Switching to Keyboard...\n");
-            g_sKeyboardDevice = g_sKeyboardTemplate;
+            CopyKeyboardTemplate();
             g_pActiveDevice = &g_sKeyboardDevice;
             PortGremlinRandomizeVIDPID(&g_sKeyboardDevice, VIDPID_TYPE_KEYBOARD);
             g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
@@ -673,7 +686,7 @@ void CycleDeviceType(void)
     }
 
     g_sConfig.ui32CycleCount++;
-    USBDevConnect(USB0_BASE);
+    MAP_USBDevConnect(USB0_BASE);
 }
 
 void SysTickIntHandler(void)
@@ -742,8 +755,7 @@ int main(void)
 
     USBStackModeSet(0, eUSBModeForceDevice, 0);
 
-    g_sKeyboardDevice = g_sKeyboardTemplate;
-    g_sKeyboardDevice.sPrivateData.sHIDDevice.ppui8StringDescriptors = g_ppui8StringDescriptorsKeyboard;
+    CopyKeyboardTemplate();
     g_eCurrentDevice = DEVICE_KEYBOARD;
     g_eCurrentDeviceType = VIDPID_TYPE_KEYBOARD;
     g_pActiveDevice = &g_sKeyboardDevice;

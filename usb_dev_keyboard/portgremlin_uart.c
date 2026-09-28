@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stddef.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "inc/hw_memmap.h"
 #include "driverlib/rom_map.h"
@@ -18,6 +20,19 @@ static void PrintOnOff(bool bValue)
     UARTprintf(bValue ? "ON\n\r" : "OFF\n\r");
 }
 
+/* Digits 1-5 are class toggles; free digits 0 and 6-9 deploy those vault
+ * slots directly. Key 'n' walks the full vault (12 profiles) in order. */
+static uint32_t s_ui32MimicCursor;
+
+static void DeployMimicAndReenum(uint32_t ui32Index)
+{
+    if (PortGremlinMimicApply(ui32Index, NULL))
+    {
+        s_ui32MimicCursor = (ui32Index + 1U) % PortGremlinMimicCount();
+        g_sConfig.bForceReenum = true;
+    }
+}
+
 void PortGremlinUARTPrintHelp(void)
 {
     UARTprintf("\n\r=== PortGremlin Command Interface ===\n\r");
@@ -33,6 +48,8 @@ void PortGremlinUARTPrintHelp(void)
     UARTprintf("  o  - oracle host fingerprint report\n\r");
     UARTprintf("  d  - driver confusion (same VID, diff class)\n\r");
     UARTprintf("  v  - print mimic vault\n\r");
+    UARTprintf("  0  - deploy mimic #0   n - next mimic\n\r");
+    UARTprintf("  6-9- deploy mimic #N\n\r");
     UARTprintf("  [  - choreo RedTeam  ]  - Stealth  \\  - Blitz\n\r");
     UARTprintf("--- Overdrive ---\n\r");
     UARTprintf("  g  - genetic evolution engine\n\r");
@@ -222,6 +239,28 @@ void PortGremlinUARTPoll(void)
                 PortGremlinMimicPrintVault();
                 break;
 
+            /* Free digits: 1-5 are class toggles above. */
+            case '0':
+                DeployMimicAndReenum(0);
+                break;
+            case '6':
+                DeployMimicAndReenum(6);
+                break;
+            case '7':
+                DeployMimicAndReenum(7);
+                break;
+            case '8':
+                DeployMimicAndReenum(8);
+                break;
+            case '9':
+                DeployMimicAndReenum(9);
+                break;
+
+            case 'n':
+            case 'N':
+                DeployMimicAndReenum(s_ui32MimicCursor);
+                break;
+
             case '[':
                 PortGremlinChoreoStart(0);
                 break;
@@ -256,10 +295,6 @@ void PortGremlinUARTPoll(void)
                 break;
 
             default:
-                if (i32Char >= '0' && i32Char <= '9')
-                {
-                    PortGremlinMimicApply((uint32_t)(i32Char - '0'), NULL);
-                }
                 break;
         }
     }

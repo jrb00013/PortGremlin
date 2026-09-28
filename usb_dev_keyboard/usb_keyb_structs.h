@@ -2,7 +2,15 @@
 #define PORTGREMLIN_STRUCTS_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include "usblib/usblib.h"
+#include "usblib/usbhid.h"
+#include "usblib/device/usbdevice.h"
+#include "usblib/device/usbdhid.h"
 #include "usblib/device/usbdhidkeyb.h"
+
+/* Local stub device records for classes we drive through USBDHIDInit.
+ * Do not include usbdhidgamepad.h — its tUSBDHIDGamepadDevice conflicts. */
 
 typedef enum {
     DEVICE_KEYBOARD = 0,

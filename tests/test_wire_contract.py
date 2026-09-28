@@ -2,8 +2,8 @@
 
 These are the tests that were missing. The CLI shipped with an unterminated
 dict literal, and the README plus the on-device help both advertised a
-`0`-`9` mimic-deploy key that the firmware never implemented. Nothing in the
-repo compared the three surfaces, so all of it went unnoticed.
+`0`-`9` mimic-deploy key while digits `1`-`5` were already class toggles.
+Nothing in the repo compared the three surfaces, so all of it went unnoticed.
 """
 
 from __future__ import annotations
@@ -43,6 +43,9 @@ def test_uart_source_parses_as_expected(firmware_dir: Path) -> None:
     # Core controls that have existed since the first commit.
     for key in ("h", "s", "b", "g", "x", "l", "v", "\\"):
         assert key in cases, f"expected UART key {key!r} in portgremlin_uart.c"
+    # Free digits + next-mimic walk the vault; 1-5 remain class toggles.
+    for key in ("0", "6", "7", "8", "9", "n"):
+        assert key in cases, f"expected mimic UART key {key!r} in portgremlin_uart.c"
 
 
 def test_cli_imports_cleanly() -> None:
@@ -93,8 +96,8 @@ def test_every_cli_command_is_handled_by_firmware(firmware_dir: Path) -> None:
 def test_onboard_help_advertises_only_real_keys(firmware_dir: Path) -> None:
     """The on-device help must not advertise unimplemented keys.
 
-    Regression guard: help and README both claimed `0`-`9` deployed a mimic
-    profile, while the firmware only ever implemented `1`-`5` (class toggle).
+    Digits 1-5 are class toggles; free digits 0 and 6-9 plus 'n' deploy
+    mimic profiles. Help must not claim the whole 0-9 range is mimic.
     """
     text = (firmware_dir / "portgremlin_uart.c").read_text()
     cases = _uart_cases(firmware_dir)
@@ -110,6 +113,20 @@ def test_onboard_help_advertises_only_real_keys(firmware_dir: Path) -> None:
 
     missing = sorted(k for k in advertised if k.lower() not in cases)
     assert not missing, f"on-device help advertises unimplemented keys: {missing}"
+
+    # Regression: do not re-advertise 1-5 as mimic deploy.
+    help_block = text.split("PortGremlinUARTPrintHelp", 1)[-1].split(
+        "PortGremlinUARTPrintStatus", 1
+    )[0]
+    assert "0-9" not in help_block, "help must not claim digits 1-5 are mimic deploy"
+
+
+def test_mimic_apply_is_reachable_from_uart(firmware_dir: Path) -> None:
+    """PortGremlinMimicApply must be called from the UART dispatcher."""
+    text = (firmware_dir / "portgremlin_uart.c").read_text()
+    assert "PortGremlinMimicApply" in text
+    assert "DeployMimicAndReenum" in text
+    assert "bForceReenum" in text
 
 
 def test_readme_documents_only_real_keys(repo_root: Path, firmware_dir: Path) -> None:

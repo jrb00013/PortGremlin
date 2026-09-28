@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stddef.h>
+#include <stdint.h>
 #include "portgremlin_config.h"
 #include "portgremlin_oracle.h"
 #include "portgremlin_vidpid.h"
@@ -57,9 +58,11 @@ static void SetVIDPID(void *pDevice, VIDPIDDeviceType eType, uint16_t ui16VID, u
     {
         case VIDPID_TYPE_KEYBOARD:
         {
+            /* TivaWare marks these fields const; PortGremlin rewrites identity
+             * at runtime, so write through the const qualifier. */
             tUSBDHIDKeyboardDevice *pKb = (tUSBDHIDKeyboardDevice *)pDevice;
-            pKb->ui16VID = ui16VID;
-            pKb->ui16PID = ui16PID;
+            *(uint16_t *)(uintptr_t)&pKb->ui16VID = ui16VID;
+            *(uint16_t *)(uintptr_t)&pKb->ui16PID = ui16PID;
             break;
         }
         case VIDPID_TYPE_AUDIO:
@@ -103,8 +106,8 @@ static void SetPowerFields(void *pDevice, VIDPIDDeviceType eType,
         case VIDPID_TYPE_KEYBOARD:
         {
             tUSBDHIDKeyboardDevice *pKb = (tUSBDHIDKeyboardDevice *)pDevice;
-            pKb->ui16MaxPowermA = ui16MaxPowermA;
-            pKb->ui8PwrAttributes = ui8PwrAttributes;
+            *(uint16_t *)(uintptr_t)&pKb->ui16MaxPowermA = ui16MaxPowermA;
+            *(uint8_t *)(uintptr_t)&pKb->ui8PwrAttributes = ui8PwrAttributes;
             break;
         }
         case VIDPID_TYPE_AUDIO:

@@ -112,7 +112,8 @@ void PortGremlinOracleOnEvent(uint32_t ui32Event)
             g_sOracle.ui32ConfigLatencyTicks = 0;
             break;
 
-        case USB_EVENT_CONFIG_SET:
+        /* TivaWare 2.2 renamed CONFIG_SET → CONFIG_CHANGE. */
+        case USB_EVENT_CONFIG_CHANGE:
             g_sOracle.bConfigSet = true;
             g_sOracle.ui32ConfigLatencyTicks =
                 g_ui32SysTickCount - g_sOracle.ui32SessionStartTick;
@@ -123,7 +124,9 @@ void PortGremlinOracleOnEvent(uint32_t ui32Event)
             }
             break;
 
-        case USB_EVENT_RESET:
+        /* No dedicated bus-reset event in TivaWare 2.2; treat ERROR as a
+         * host-side fault signal for the fingerprint reset counter. */
+        case USB_EVENT_ERROR:
             g_sOracle.ui32ResetCount++;
             break;
 

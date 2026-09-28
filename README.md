@@ -77,6 +77,8 @@ Interactive visualization with no LaunchPad required:
 | `d` | Driver confusion (same VID, different class) |
 | `l` | Toggle JSON telemetry |
 | `v` | Print the mimic vault |
+| `0` `6`–`9` | Deploy mimic vault profile N (slots 1–5 share digits with class toggles) |
+| `n` | Next mimic vault profile (walks the full vault) |
 | `[` `]` `\` | Choreography: RedTeam / Stealth / Blitz |
 | `1`–`5` | Toggle device class: keyboard / audio / printer / MIDI / gamepad |
 | `+` / `-` | Cycle interval faster / slower |

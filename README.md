@@ -19,6 +19,7 @@ PortGremlin is a **closed-loop USB enumeration attack platform** — firmware on
 | **Hardware Flash** | `./setup.sh --flash` | ARM toolchain, firmware build, optional flash |
 | **Run Virtual** | `./setup.sh --run --virtual` | Open the GUI simulator |
 | **Run Hardware** | `./setup.sh --run --flash` | Overwatch monitor + dashboard at `:8765` |
+| **Doctor** | `./setup.sh --doctor` | Report which prerequisites are present, change nothing |
 
 ## Virtual Lab (GUI)
 
@@ -75,8 +76,17 @@ Interactive visualization with no LaunchPad required:
 | `o` | Oracle report |
 | `d` | Driver confusion (same VID, different class) |
 | `l` | Toggle JSON telemetry |
-| `0`–`9` | Deploy mimic profile |
+| `v` | Print the mimic vault |
 | `[` `]` `\` | Choreography: RedTeam / Stealth / Blitz |
+| `1`–`5` | Toggle device class: keyboard / audio / printer / MIDI / gamepad |
+| `+` / `-` | Cycle interval faster / slower |
+| `a` | Toggle auto cycle |
+| `m` | Toggle malformed mode |
+| `r` | Toggle real VID database |
+| `t` | Randomise descriptor strings |
+| `c` | Force a cycle |
+| `e` | Force re-enumeration |
+| `s` | Status report |
 | `h` | Help |
 
 ## Host Tools
@@ -90,11 +100,43 @@ python3 tools/gremlin-oracle.py        # dual-perspective monitor
 
 ## Build & Flash
 
+The firmware build needs TI's TivaWare C Series SDK. It is not
+redistributable, so it is neither vendored nor downloaded by `setup.sh` —
+download it from TI and point the build at it:
+
 ```sh
 export TIVAWARE_PATH=/opt/ti/TivaWare_C_Series-2.2.0.295
-./setup.sh
+./setup.sh --doctor      # confirm the toolchain and SDK are visible
+./setup.sh --flash
 make -C usb_dev_keyboard flash
 ```
+
+Run `./setup.sh --doctor` first if a build is skipped: it reports exactly
+which prerequisite is missing instead of warning and continuing.
+
+## Testing
+
+The host tools and the Virtual Lab engine are covered by a test suite that
+needs no hardware:
+
+```sh
+pip install -r tools/requirements.txt pytest
+python3 -m pytest tests -q
+```
+
+The suite pins the contracts that are easy to break silently:
+
+- every key the host CLI can send is a key the firmware implements
+- the on-device help and this README only advertise keys that exist
+- the Virtual Lab engine round-trips every host fingerprint it simulates
+- driver confusion never emits the reserved `0x0000` identity
+- the `@PG{...}` telemetry payloads stay flat JSON the host parser accepts
+- Makefile source lists, the linker script and declared dependencies resolve
+
+CI (`.github/workflows/ci.yml`) runs these on every push and pull request.
+The firmware itself is not compiled in CI, because the TivaWare SDK is
+license-gated; that job is opt-in via the `TIVAWARE_AVAILABLE` repository
+variable.
 
 ## Hardware
 
@@ -118,6 +160,7 @@ tools/
   portgremlin-overwatch.py  Hardware orchestrator + dashboard
   portgremlin-cli.py        Interactive serial control
   gremlin-oracle.py         Dual-perspective session monitor
+tests/                      Host tool + Virtual Lab test suite
 setup.sh                    Interactive setup + run
 ```
 
